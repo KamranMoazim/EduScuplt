@@ -1,0 +1,20 @@
+
+
+namespace Backend.Models
+{
+    public class CourseVideo
+    {
+        public int ID { get; set; }
+        public string Title { get; set; }
+        public string VideoURL { get; set; }
+        public string Description { get; set; }
+        public string ThumbnailURL { get; set; }
+
+
+        public Course Course { get; set; }
+        public List<CourseVideoLikes> CourseVideoLikes { get; set; }
+        public List<VideoComments> VideoComments { get; set; }
+        public List<Notification> Notifications { get; set; }
+
+    }
+}
