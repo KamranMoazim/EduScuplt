@@ -9,7 +9,7 @@ ENV SimpleProperty="hello-from-BASE-dockerfile"
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["./Backend/Backend.csproj", "./"]
+COPY ["./Backend.csproj", "./"]
 RUN dotnet restore "./Backend.csproj"
 COPY . ./
 RUN dotnet build "Backend.csproj" -c Release -o /app/build
