@@ -13,9 +13,9 @@ WORKDIR /src
 # Change working directory to Backend
 WORKDIR /src/Backend
 
-COPY ["./Backend.csproj", "./"]
+COPY ["Backend.csproj", "./"]
 RUN dotnet restore "./Backend.csproj"
-COPY . ./
+COPY . .
 RUN dotnet build "Backend.csproj" -c Release -o /app/build
 
 FROM build AS publish
