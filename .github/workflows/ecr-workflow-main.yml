@@ -38,33 +38,33 @@ jobs:
           registry-type: public
           skip-logout: false
 
-      # - name: Build and push
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     file: ./Backend/Dockerfile
-      #     push: true
-      #     tags: ${{ secrets.AWS_ECR_REPO_URI }}:latest, ${{ secrets.AWS_ECR_REPO_URI }}:${{ github.run_number }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Backend/Dockerfile
+          push: true
+          tags: ${{ secrets.AWS_ECR_REPO_URI }}:latest, ${{ secrets.AWS_ECR_REPO_URI }}:${{ github.run_number }}
 
-      # - name: Fill in the new image ID in the Amazon ECS task definition
-      #   id: task-def
-      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   with:
-      #     task-definition: ./Backend/task-definition.json
-      #     container-name: ${{ secrets.AWS_TASK_DEFINITION_CONTAINER_NAME }}
-      #     image: ${{ secrets.AWS_ECR_REPO_URI }}
-      #   env:
-      #     AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-      #     AWS_REGION: ${{ secrets.AWS_REGION }}
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ./Backend/task-definition.json
+          container-name: ${{ secrets.AWS_TASK_DEFINITION_CONTAINER_NAME }}
+          image: ${{ secrets.AWS_ECR_REPO_URI }}
+        env:
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      # - name: Deploy Amazon ECS task definition
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      #   with:
-      #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-      #     service: ${{ secrets.AWS_SERVICE_NAME }}
-      #     cluster: ${{ secrets.AWS_CLUSTER_NAME }}
-      #     wait-for-service-stability: true
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ secrets.AWS_SERVICE_NAME }}
+          cluster: ${{ secrets.AWS_CLUSTER_NAME }}
+          wait-for-service-stability: true
 
       - name: Call REST API
         run: |
@@ -81,7 +81,7 @@ jobs:
           echo "Public IP: $public_ip"
           
           # Make a GET request to the REST API using curl
-          response=$(curl -s -X GET "https://api.callmebot.com/whatsapp.php?phone=${{ secrets.MY_PHONE }}&text=$public_ip&apikey=${{ secrets.CALLME_BOT_KEY }}")
+          response=$(curl -s -X GET "https://api.callmebot.com/whatsapp.php?phone=${{ secrets.MY_PHONE }}&text=$public_ip:9090/swagger/index.html&apikey=${{ secrets.CALLME_BOT_KEY }}")
           
           # Print the API response
           echo "API Response: $response"

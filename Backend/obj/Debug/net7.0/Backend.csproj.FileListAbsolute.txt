@@ -67,3 +67,6 @@
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/obj/Debug/net7.0/Backend.pdb
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/obj/Debug/net7.0/Backend.genruntimeconfig.cache
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/obj/Debug/net7.0/ref/Backend.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/task-definition.json
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/AspNetCoreRateLimit.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Newtonsoft.Json.dll
