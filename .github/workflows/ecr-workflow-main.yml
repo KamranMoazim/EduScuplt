@@ -16,9 +16,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Change to a specific directory
-        run: cd Backend
-
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
