@@ -9,6 +9,9 @@ permissions:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Backend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -44,7 +47,6 @@ jobs:
           file: ./Backend/Dockerfile
           push: true
           tags: ${{ secrets.AWS_ECR_REPO_URI }}:latest, ${{ secrets.AWS_ECR_REPO_URI }}:${{ github.run_number }}
-        working-directory: ./Backend
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
