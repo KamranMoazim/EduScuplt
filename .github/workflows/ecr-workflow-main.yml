@@ -38,50 +38,73 @@ jobs:
           registry-type: public
           skip-logout: false
 
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          file: ./Backend/Dockerfile
-          push: true
-          tags: ${{ secrets.AWS_ECR_REPO_URI }}:latest, ${{ secrets.AWS_ECR_REPO_URI }}:${{ github.run_number }}
+      # - name: Build and push
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     file: ./Backend/Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.AWS_ECR_REPO_URI }}:latest, ${{ secrets.AWS_ECR_REPO_URI }}:${{ github.run_number }}
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ./Backend/task-definition.json
-          container-name: ${{ secrets.AWS_TASK_DEFINITION_CONTAINER_NAME }}
-          image: ${{ secrets.AWS_ECR_REPO_URI }}
-        env:
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # - name: Fill in the new image ID in the Amazon ECS task definition
+      #   id: task-def
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #   with:
+      #     task-definition: ./Backend/task-definition.json
+      #     container-name: ${{ secrets.AWS_TASK_DEFINITION_CONTAINER_NAME }}
+      #     image: ${{ secrets.AWS_ECR_REPO_URI }}
+      #   env:
+      #     AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+      #     AWS_REGION: ${{ secrets.AWS_REGION }}
+      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ secrets.AWS_SERVICE_NAME }}
-          cluster: ${{ secrets.AWS_CLUSTER_NAME }}
-          wait-for-service-stability: true
+      # - name: Deploy Amazon ECS task definition
+      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      #   with:
+      #     task-definition: ${{ steps.task-def.outputs.task-definition }}
+      #     service: ${{ secrets.AWS_SERVICE_NAME }}
+      #     cluster: ${{ secrets.AWS_CLUSTER_NAME }}
+      #     wait-for-service-stability: true
 
-      - name: Get ECS Service IP
+      - name: Call REST API
         run: |
           ecs_task_info=$(aws ecs list-tasks --cluster ${{ secrets.AWS_CLUSTER_NAME }} --service-name ${{ secrets.AWS_SERVICE_NAME }})
           task_arn=$(echo "$ecs_task_info" | jq -r '.taskArns[0]')
           echo "ECS Task ARN: $task_arn"
+          
           task_details=$(aws ecs describe-tasks --cluster ${{ secrets.AWS_CLUSTER_NAME }} --tasks "$task_arn")
           network_interface_id=$(echo "$task_details" | jq -r '.tasks[0].attachments[0].details[] | select(.name == "networkInterfaceId") | .value')
           echo "networkInterfaceId: $network_interface_id"
+          
           network_interface_details=$(aws ec2 describe-network-interfaces --network-interface-ids "$network_interface_id")
           public_ip=$(echo "$network_interface_details" | jq -r '.NetworkInterfaces[0].Association.PublicIp')
           echo "Public IP: $public_ip"
-          echo "#Public IP: $public_ip" > start.md
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add .
-          git commit -m "Update ECS service IP"
-          git push
+          
+          # Make a GET request to the REST API using curl
+          response=$(curl -s -X GET "https://api.callmebot.com/whatsapp.php?phone=${{ secrets.MY_PHONE }}&text=$public_ip&apikey=${{ secrets.CALLME_BOT_KEY }}")
+          
+          # Print the API response
+          echo "API Response: $response"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+
+      # - name: Get ECS Service IP
+      #   run: |
+      #     ecs_task_info=$(aws ecs list-tasks --cluster ${{ secrets.AWS_CLUSTER_NAME }} --service-name ${{ secrets.AWS_SERVICE_NAME }})
+      #     task_arn=$(echo "$ecs_task_info" | jq -r '.taskArns[0]')
+      #     echo "ECS Task ARN: $task_arn"
+      #     task_details=$(aws ecs describe-tasks --cluster ${{ secrets.AWS_CLUSTER_NAME }} --tasks "$task_arn")
+      #     network_interface_id=$(echo "$task_details" | jq -r '.tasks[0].attachments[0].details[] | select(.name == "networkInterfaceId") | .value')
+      #     echo "networkInterfaceId: $network_interface_id"
+      #     network_interface_details=$(aws ec2 describe-network-interfaces --network-interface-ids "$network_interface_id")
+      #     public_ip=$(echo "$network_interface_details" | jq -r '.NetworkInterfaces[0].Association.PublicIp')
+      #     echo "Public IP: $public_ip"
+      #     echo "#Public IP: $public_ip" > start.md
+      #     git config --global user.email "github-actions@github.com"
+      #     git config --global user.name "GitHub Actions"
+      #     git add .
+      #     git commit -m "Update ECS service IP"
+      #     git push
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
