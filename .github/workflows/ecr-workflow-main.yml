@@ -40,7 +40,7 @@ jobs:
         with:
           file: ./Backend/Dockerfile
           push: true
-          tags: ${{ secrets.AWS_ECR_REGISTRY }}:latest, ${{ secrets.AWS_ECR_REGISTRY }}:${{ github.run_number }}
+          tags: ${{ secrets.AWS_ECR_REPO_URI }}:latest, ${{ secrets.AWS_ECR_REPO_URI }}:${{ github.run_number }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
