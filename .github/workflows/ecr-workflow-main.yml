@@ -38,18 +38,18 @@ jobs:
           registry-type: public
           skip-logout: false
 
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          file: ./Backend/Dockerfile
-          push: true
-          tags: ${{ secrets.AWS_ECR_REPO_URI }}:latest, ${{ secrets.AWS_ECR_REPO_URI }}:${{ github.run_number }}
+      # - name: Build and push
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     file: ./Backend/Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.AWS_ECR_REPO_URI }}:latest, ${{ secrets.AWS_ECR_REPO_URI }}:${{ github.run_number }}
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-definition.json
+          task-definition: ./Backend/task-definition.json
           container-name: ${{ secrets.AWS_TASK_DEFINITION_CONTAINER_NAME }}
           image: ${{ secrets.AWS_ECR_REPO_URI }}
         env:
