@@ -22,4 +22,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+
+
+// app.Run();
+
+app.MapGet("/", () => "Hello World from KAMRAN!");
+
+app.Run("http://0.0.0.0:9090");
