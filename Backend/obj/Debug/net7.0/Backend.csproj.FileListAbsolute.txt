@@ -70,3 +70,11 @@
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/task-definition.json
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/AspNetCoreRateLimit.dll
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Newtonsoft.Json.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/BCrypt.Net-Next.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/AutoMapper.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Microsoft.IdentityModel.Abstractions.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Microsoft.IdentityModel.Logging.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Microsoft.IdentityModel.Tokens.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/System.IdentityModel.Tokens.Jwt.dll
