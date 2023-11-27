@@ -19,7 +19,7 @@ namespace Backend.Utils
                 // new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
                 // new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
-                // new Claim(ClaimTypes.Role, user.UserType.ToString())
+                new Claim(ClaimTypes.Role, user.UserType.ToString())
             };
 
             string token = GenerateToken(claims);

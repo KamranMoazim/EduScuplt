@@ -10,5 +10,8 @@ namespace Backend.Dtos
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public string UserType { get; set; }
     }
 }
