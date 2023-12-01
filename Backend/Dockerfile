@@ -13,7 +13,7 @@ WORKDIR /src
 COPY ["./Backend/Backend.csproj", "./"]
 RUN dotnet restore "./Backend.csproj"
 COPY ./Backend .
-RUN dotnet build "Backend.csproj" -c Release -o /app/build
+RUN dotnet build "./Backend.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "Backend.csproj" -c Release -o /app/publish /p:UseAppHost=false
