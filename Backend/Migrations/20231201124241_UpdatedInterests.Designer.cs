@@ -3,6 +3,7 @@ using System;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,28 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ProjectAppContext))]
-    partial class ProjectAppContextModelSnapshot : ModelSnapshot
+    [Migration("20231201124241_UpdatedInterests")]
+    partial class UpdatedInterests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
-
-            modelBuilder.Entity("Backend.Models.Admin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Admin");
-                });
 
             modelBuilder.Entity("Backend.Models.Course", b =>
                 {
@@ -39,20 +26,11 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ApprovedById")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("InstructorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsPublic")
+                    b.Property<int>("InstructorID")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("Price")
@@ -61,19 +39,13 @@ namespace Backend.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ThumbnailURL")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ApprovedById");
-
-                    b.HasIndex("InstructorId");
+                    b.HasIndex("InstructorID");
 
                     b.ToTable("Courses");
                 });
@@ -88,7 +60,7 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CourseId")
+                    b.Property<int>("CourseID")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("Discount")
@@ -97,31 +69,43 @@ namespace Backend.Migrations
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("InstructorId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("InstructorId");
+                    b.HasIndex("CourseID");
 
                     b.ToTable("CourseDiscounts");
                 });
 
-            modelBuilder.Entity("Backend.Models.CourseMarketing", b =>
+            modelBuilder.Entity("Backend.Models.CourseProgress", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CourseDescription")
-                        .IsRequired()
+                    b.Property<int>("CourseID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("LastProgressDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<double>("Progress")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("StudentCoursesID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("UserID")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
-                    b.ToTable("CourseMarketing");
+                    b.HasIndex("CourseID");
+
+                    b.HasIndex("StudentCoursesID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("CourseProgress");
                 });
 
             modelBuilder.Entity("Backend.Models.CourseVideo", b =>
@@ -130,7 +114,7 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CourseId")
+                    b.Property<int>("CourseID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
@@ -151,9 +135,36 @@ namespace Backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseID");
 
                     b.ToTable("CourseVideos");
+                });
+
+            modelBuilder.Entity("Backend.Models.CourseVideoLikes", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CourseVideoID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Disliked")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Liked")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CourseVideoID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("CourseVideoLikes");
                 });
 
             modelBuilder.Entity("Backend.Models.Instructor", b =>
@@ -161,6 +172,10 @@ namespace Backend.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("About")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("AccountDetails")
                         .IsRequired()
@@ -170,21 +185,15 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<double>("PendingAmount")
+                    b.Property<double>("EarnedAmount")
                         .HasColumnType("REAL");
 
-                    b.Property<double>("TotalEarnedAmount")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserID")
                         .HasColumnType("INTEGER");
-
-                    b.Property<double>("WithdrawnAmount")
-                        .HasColumnType("REAL");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserID");
 
                     b.ToTable("Instructors");
                 });
@@ -210,78 +219,60 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CourseVideoID")
+                    b.Property<int>("CourseVideoID")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NotificationType")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("RelatedEntityId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("VideoCommentID")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
                     b.HasIndex("CourseVideoID");
 
-                    b.HasIndex("RelatedEntityId");
+                    b.HasIndex("UserID");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("VideoCommentID");
 
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("Backend.Models.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Student");
-                });
-
-            modelBuilder.Entity("Backend.Models.StudentCourseVideoLikes", b =>
+            modelBuilder.Entity("Backend.Models.Payment", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CourseVideoId")
+                    b.Property<double>("Amount")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("CourseID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsLiked")
-                        .HasColumnType("INTEGER");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int>("StudentID")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CourseVideoId");
+                    b.HasIndex("CourseID");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentID");
 
-                    b.ToTable("StudentCourseVideoLikes");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("Backend.Models.StudentCourses", b =>
@@ -290,19 +281,10 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("CourseCompleteDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<double>("CourseCompleteProgressPercentage")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("CourseId")
+                    b.Property<int>("CourseID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("CourseStartDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("LastProgressDate")
+                    b.Property<DateTime>("DateJoined")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Rating")
@@ -312,17 +294,14 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("StudentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StudentPaymentId")
+                    b.Property<int>("StudentID")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseID");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentID");
 
                     b.ToTable("StudentCourses");
                 });
@@ -336,62 +315,16 @@ namespace Backend.Migrations
                     b.Property<int>("InterestId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InterestId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("StudentInterests");
-                });
-
-            modelBuilder.Entity("Backend.Models.StudentPayment", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("ActualAmount")
-                        .HasColumnType("REAL");
-
-                    b.Property<int>("CourseDiscountId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("DiscountedAmount")
-                        .HasColumnType("REAL");
-
-                    b.Property<bool>("IsDiscounted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("PaidAmount")
-                        .HasColumnType("REAL");
-
-                    b.Property<DateTime>("PayingDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StripePaymentID")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("StudentCoursesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CourseDiscountId");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("StudentCoursesId")
-                        .IsUnique();
-
-                    b.ToTable("StudentPayment");
                 });
 
             modelBuilder.Entity("Backend.Models.Tags", b =>
@@ -455,35 +388,21 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.VideoComments", b =>
                 {
                     b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CommentById")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("CommentDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CourseVideoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("ReplyToId")
+                    b.Property<int>("ReplyToID")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CommentById");
-
-                    b.HasIndex("CourseVideoId");
-
-                    b.HasIndex("ReplyToId");
+                    b.HasIndex("ReplyToID");
 
                     b.ToTable("VideoComments");
                 });
@@ -503,32 +422,13 @@ namespace Backend.Migrations
                     b.ToTable("CourseTags");
                 });
 
-            modelBuilder.Entity("Backend.Models.Admin", b =>
-                {
-                    b.HasOne("Backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Backend.Models.Course", b =>
                 {
-                    b.HasOne("Backend.Models.Admin", "ApprovedBy")
-                        .WithMany()
-                        .HasForeignKey("ApprovedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Backend.Models.Instructor", "Instructor")
-                        .WithMany("Courses")
-                        .HasForeignKey("InstructorId")
+                        .WithMany()
+                        .HasForeignKey("InstructorID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ApprovedBy");
 
                     b.Navigation("Instructor");
                 });
@@ -537,37 +437,71 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.Course", "Course")
                         .WithMany("CourseDiscounts")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Models.Instructor", "Instructor")
-                        .WithMany("CourseDiscounts")
-                        .HasForeignKey("InstructorId")
+                        .HasForeignKey("CourseID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Course");
+                });
 
-                    b.Navigation("Instructor");
+            modelBuilder.Entity("Backend.Models.CourseProgress", b =>
+                {
+                    b.HasOne("Backend.Models.Course", "Course")
+                        .WithMany("CourseProgress")
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.StudentCourses", "StudentCourses")
+                        .WithMany()
+                        .HasForeignKey("StudentCoursesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.User", null)
+                        .WithMany("CourseProgress")
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("StudentCourses");
                 });
 
             modelBuilder.Entity("Backend.Models.CourseVideo", b =>
                 {
                     b.HasOne("Backend.Models.Course", "Course")
                         .WithMany("CourseVideos")
-                        .HasForeignKey("CourseId")
+                        .HasForeignKey("CourseID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("Backend.Models.CourseVideoLikes", b =>
+                {
+                    b.HasOne("Backend.Models.CourseVideo", "CourseVideo")
+                        .WithMany("CourseVideoLikes")
+                        .HasForeignKey("CourseVideoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.User", "User")
+                        .WithMany("CourseVideoLikes")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CourseVideo");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Backend.Models.Instructor", b =>
                 {
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -576,57 +510,46 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Notification", b =>
                 {
-                    b.HasOne("Backend.Models.CourseVideo", null)
-                        .WithMany("Notifications")
-                        .HasForeignKey("CourseVideoID");
-
-                    b.HasOne("Backend.Models.CourseMarketing", "CourseMarketing")
-                        .WithMany()
-                        .HasForeignKey("RelatedEntityId");
-
-                    b.HasOne("Backend.Models.VideoComments", "VideoComments")
-                        .WithMany()
-                        .HasForeignKey("RelatedEntityId");
-
-                    b.HasOne("Backend.Models.User", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CourseMarketing");
-
-                    b.Navigation("User");
-
-                    b.Navigation("VideoComments");
-                });
-
-            modelBuilder.Entity("Backend.Models.Student", b =>
-                {
-                    b.HasOne("Backend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Backend.Models.StudentCourseVideoLikes", b =>
-                {
                     b.HasOne("Backend.Models.CourseVideo", "CourseVideo")
-                        .WithMany("StudentCourseVideoLikes")
-                        .HasForeignKey("CourseVideoId")
+                        .WithMany("Notifications")
+                        .HasForeignKey("CourseVideoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Backend.Models.Student", "Student")
-                        .WithMany("StudentCourseVideoLikes")
-                        .HasForeignKey("StudentId")
+                    b.HasOne("Backend.Models.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.VideoComments", "VideoComment")
+                        .WithMany("Notifications")
+                        .HasForeignKey("VideoCommentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CourseVideo");
+
+                    b.Navigation("User");
+
+                    b.Navigation("VideoComment");
+                });
+
+            modelBuilder.Entity("Backend.Models.Payment", b =>
+                {
+                    b.HasOne("Backend.Models.Course", "Course")
+                        .WithMany("Payments")
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.User", "Student")
+                        .WithMany("Payments")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
 
                     b.Navigation("Student");
                 });
@@ -635,13 +558,13 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.Course", "Course")
                         .WithMany("StudentCourses")
-                        .HasForeignKey("CourseId")
+                        .HasForeignKey("CourseID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Backend.Models.Student", "Student")
+                    b.HasOne("Backend.Models.User", "Student")
                         .WithMany("StudentCourse")
-                        .HasForeignKey("StudentId")
+                        .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -658,61 +581,36 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Backend.Models.Student", "Student")
+                    b.HasOne("Backend.Models.User", "User")
                         .WithMany("StudentInterests")
-                        .HasForeignKey("StudentId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Interest");
 
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Backend.Models.StudentPayment", b =>
-                {
-                    b.HasOne("Backend.Models.CourseDiscount", "CourseDiscount")
-                        .WithMany()
-                        .HasForeignKey("CourseDiscountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Models.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Models.StudentCourses", "StudentCourses")
-                        .WithOne("StudentPayment")
-                        .HasForeignKey("Backend.Models.StudentPayment", "StudentCoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("CourseDiscount");
-
-                    b.Navigation("StudentCourses");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Backend.Models.VideoComments", b =>
                 {
-                    b.HasOne("Backend.Models.User", "CommentBy")
-                        .WithMany()
-                        .HasForeignKey("CommentById")
+                    b.HasOne("Backend.Models.CourseVideo", "CourseVideo")
+                        .WithMany("VideoComments")
+                        .HasForeignKey("ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Backend.Models.CourseVideo", "CourseVideo")
+                    b.HasOne("Backend.Models.User", "CommentBy")
                         .WithMany("VideoComments")
-                        .HasForeignKey("CourseVideoId")
+                        .HasForeignKey("ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Backend.Models.User", "ReplyTo")
                         .WithMany()
-                        .HasForeignKey("ReplyToId");
+                        .HasForeignKey("ReplyToID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CommentBy");
 
@@ -740,25 +638,22 @@ namespace Backend.Migrations
                 {
                     b.Navigation("CourseDiscounts");
 
+                    b.Navigation("CourseProgress");
+
                     b.Navigation("CourseVideos");
+
+                    b.Navigation("Payments");
 
                     b.Navigation("StudentCourses");
                 });
 
             modelBuilder.Entity("Backend.Models.CourseVideo", b =>
                 {
+                    b.Navigation("CourseVideoLikes");
+
                     b.Navigation("Notifications");
 
-                    b.Navigation("StudentCourseVideoLikes");
-
                     b.Navigation("VideoComments");
-                });
-
-            modelBuilder.Entity("Backend.Models.Instructor", b =>
-                {
-                    b.Navigation("CourseDiscounts");
-
-                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("Backend.Models.Interests", b =>
@@ -766,22 +661,24 @@ namespace Backend.Migrations
                     b.Navigation("StudentInterests");
                 });
 
-            modelBuilder.Entity("Backend.Models.Student", b =>
+            modelBuilder.Entity("Backend.Models.User", b =>
                 {
+                    b.Navigation("CourseProgress");
+
+                    b.Navigation("CourseVideoLikes");
+
+                    b.Navigation("Notifications");
+
+                    b.Navigation("Payments");
+
                     b.Navigation("StudentCourse");
 
-                    b.Navigation("StudentCourseVideoLikes");
-
                     b.Navigation("StudentInterests");
+
+                    b.Navigation("VideoComments");
                 });
 
-            modelBuilder.Entity("Backend.Models.StudentCourses", b =>
-                {
-                    b.Navigation("StudentPayment")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Backend.Models.User", b =>
+            modelBuilder.Entity("Backend.Models.VideoComments", b =>
                 {
                     b.Navigation("Notifications");
                 });

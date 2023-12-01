@@ -15,17 +15,35 @@ namespace Backend.Models
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseDiscount> CourseDiscounts { get; set; }
-        public DbSet<CourseProgress> CourseProgress { get; set; }
+        // public DbSet<CourseProgress> CourseProgress { get; set; } // adjusted in StudentCourses
         public DbSet<CourseVideo> CourseVideos { get; set; }
-        public DbSet<CourseVideoLikes> CourseVideoLikes { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Interests> Interests { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<StudentCourses> StudentCourses { get; set; }
+        // public DbSet<Payment> Payments { get; set; } // adjusted in StudentCourses
         public DbSet<Tags> Tags { get; set; }
+        public DbSet<CourseMarketing> CourseMarketing { get; set; }
+
+
+
+
         public DbSet<User> Users { get; set; }
+
+
+        public DbSet<Admin> Admin { get; set; }
+
+
+        public DbSet<Student> Student { get; set; }
+        public DbSet<StudentInterests> StudentInterests { get; set; }
+        public DbSet<StudentCourses> StudentCourses { get; set; }
+        public DbSet<StudentCourseVideoLikes> StudentCourseVideoLikes { get; set; }
+        public DbSet<StudentPayment> StudentPayment { get; set; }
+
+
+
         public DbSet<VideoComments> VideoComments { get; set; }
+
+
         
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -37,15 +55,20 @@ namespace Backend.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<VideoComments>()
-                .HasOne(m => m.CourseVideo)
-                .WithMany(u => u.VideoComments)
-                .HasForeignKey(m => m.ID);
+            modelBuilder.Entity<StudentCourses>()
+                .HasOne(sc => sc.StudentPayment)
+                .WithOne(sp => sp.StudentCourses)
+                .HasForeignKey<StudentPayment>(sp => sp.StudentCoursesId);
 
-            modelBuilder.Entity<VideoComments>()
-                .HasOne(m => m.CommentBy)
-                .WithMany(u => u.VideoComments)
-                .HasForeignKey(m => m.ID);
+            // modelBuilder.Entity<VideoComments>()
+            //     .HasOne(m => m.CourseVideo)
+            //     .WithMany(u => u.VideoComments)
+            //     .HasForeignKey(m => m.ID);
+
+            // modelBuilder.Entity<VideoComments>()
+            //     .HasOne(m => m.CommentBy)
+            //     .WithMany(u => u.VideoComments)
+            //     .HasForeignKey(m => m.ID);
 
 
             // modelBuilder.Entity<User>().ToTable("AspNetUsers");
@@ -55,6 +78,13 @@ namespace Backend.Models
             // modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("AspNetUserLogins");
             // modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("AspNetRoleClaims");
             // modelBuilder.Entity<IdentityUserToken<int>>().ToTable("AspNetUserTokens");
+
+
+            // modelBuilder.Entity<Student>()
+            //     .HasOne(s => s.User)
+            //     .WithOne(u => u.Student)
+            //     .HasForeignKey<Student>(s => s.UserId); // Assuming you have a UserId property in the Student class
+
 
             base.OnModelCreating(modelBuilder);
 

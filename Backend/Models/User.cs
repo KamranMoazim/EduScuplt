@@ -1,12 +1,10 @@
 
 
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Models
 {
     public class User
-    // : IdentityUser<int>
     {
         public int ID { get; set; }
         public string FirstName { get; set; }
@@ -18,7 +16,6 @@ namespace Backend.Models
         public string PhoneNumber { get; set; }
 
 
-        // public ProjectEnums.UserType UserType { get; set; }
         [NotMapped] // Exclude this property from being mapped to the database
         public ProjectEnums.UserType UserTypeEnums
         {
@@ -41,19 +38,26 @@ namespace Backend.Models
         }
 
         // This property will be mapped to the database for UserType
-        
         public string UserType { get; set; }
 
-        public List<CourseVideoLikes> CourseVideoLikes { get; set; }
-        public List<VideoComments> VideoComments { get; set; }
-        
-        public List<Interests> Interests { get; set; }
-        public List<Payment> Payments { get; set; }
-        
-        public List<StudentCourses> StudentCourse { get; set; }
 
-        public List<CourseProgress> CourseProgress { get; set; }
+
+        // becuase any user can comment on a video , thats why we have to add this property in user model
+        // public List<VideoComments> VideoComments { get; set; }
         public List<Notification> Notifications { get; set; }
+
+
+
+
+
+        // public List<CourseVideoLikes> CourseVideoLikes { get; set; }
+        
+        // public List<Interests> Interests { get; set; }
+        // public List<Payment> Payments { get; set; }
+        
+        // public List<StudentCourses> StudentCourse { get; set; }
+
+        // public List<CourseProgress> CourseProgress { get; set; }
 
     }
 }

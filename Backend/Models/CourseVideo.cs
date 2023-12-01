@@ -10,10 +10,17 @@ namespace Backend.Models
         public string Description { get; set; }
         public string ThumbnailURL { get; set; }
 
-
         public Course Course { get; set; }
-        public List<CourseVideoLikes> CourseVideoLikes { get; set; }
+        public int CourseId { get; set; }
+
+
+        public List<StudentCourseVideoLikes> StudentCourseVideoLikes { get; set; }
+
         public List<VideoComments> VideoComments { get; set; }
+
+
+
+
         public List<Notification> Notifications { get; set; }
 
     }
