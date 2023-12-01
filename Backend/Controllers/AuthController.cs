@@ -13,6 +13,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Backend.Utils;
 using Backend.Exceptions;
 using System.Security.Claims;
+using Backend.Dtos.UserDtos;
 
 namespace Backend.Controllers
 {

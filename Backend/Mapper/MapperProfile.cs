@@ -1,6 +1,6 @@
 
 using AutoMapper;
-using Backend.Dtos;
+using Backend.Dtos.UserDtos;
 using Backend.Models;
 
 
