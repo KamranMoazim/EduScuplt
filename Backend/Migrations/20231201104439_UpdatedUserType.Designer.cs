@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ProjectAppContext))]
-    [Migration("20231108173447_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231201104439_UpdatedUserType")]
+    partial class UpdatedUserType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -355,8 +355,9 @@ namespace Backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserType")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserTypeString")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ID");
 

@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Backend.Dtos;
 using Backend.IRepositories;
 using Backend.Models;
-using Backend.Utils;
+using Backend.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Backend.Controllers
 {
@@ -15,6 +17,9 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly UserManager<User> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IConfiguration _configuration;
         public IAuthRepository AuthRepository { get; set; }
 
         public AuthController(IAuthRepository authRepository)
@@ -23,6 +28,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("/users")]
+        [AllowAnonymous]
         public ActionResult<IEnumerable<UserDto>> GetAllUsers()
         {
             return Ok(AuthRepository.GetAll());
@@ -30,43 +36,87 @@ namespace Backend.Controllers
 
 
         [HttpPost("/register")]
+        [AllowAnonymous]
         public ActionResult<UserDto> Register([FromBody] UserDto userDto)
         {
-            UserDto user = AuthRepository.Register(userDto);
+            User user = AuthRepository.Register(userDto);
 
             return Ok(user);
         }
         
 
         [HttpPost("/login")]
+        [AllowAnonymous]
         public ActionResult<string> Login( [FromBody] UserDto userDto)
         {
-            UserDto user = AuthRepository.Login(userDto);
+            User user = AuthRepository.Login(userDto);
 
             if (user == null)
             {
                 return BadRequest("Invalid credentials");
             }
 
-            string token = AuthUtils.CreateToken(user);
+            string token = new AuthUtils(userManager, roleManager, _configuration).CreateToken(user);
 
-            return Ok(token);
+            return Ok(new
+            {
+                token,
+                user
+            });
         }
 
         [HttpGet("/student")]
-        // [Role("YourRoleName")]
-        // [Authorize(Roles = ProjectEnums.UserType.Student.ToString())]
-        // [Authorize(Roles = "Student")]
-        [Role("Student")]
+        // [Role("Student")]
+        [Authorize(Roles = "Student")]
+        // [Authorize(Policy = "StudentPolicy")]
         public ActionResult<string> StudentAccess()
         {
+            // return Ok("Hi Student");
+            // Console.WriteLine("User.Identity.IsAuthenticated: " + User.Identity.IsAuthenticated);
+            // Console.WriteLine("User.IsInRole(\"Student\"): " + User.IsInRole("Student"));
+            // if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
+            // {
+            //     return Ok("Hi Student");
+            // }
+            // else
+            // {
+            //     // If the user is not authenticated or does not have the required role, return an unauthorized result
+            //     return Unauthorized("Unauthorized access");
+            // }
             return Ok("Hi Student");
         }
 
+        [Authorize(Roles = "Student")]
+        [HttpGet("/test")]
+        public IActionResult Test()
+        {
+            // Get token from header
+
+            string token = Request.Headers["Authorization"];
+
+            if (token.StartsWith("Bearer"))
+            {
+                token = token.Substring("Bearer ".Length).Trim();
+            }
+            var handler = new JwtSecurityTokenHandler();
+
+            // Returns all claims present in the token
+
+            JwtSecurityToken jwt = handler.ReadJwtToken(token);
+
+            var claims = "List of Claims: \n\n";
+
+            foreach (var claim in jwt.Claims)
+            {
+                claims += $"{claim.Type}: {claim.Value}\n";
+            }
+
+            return Ok(claims);
+        }
 
         [HttpGet("/instructor")]
-        // [Authorize(Roles = "Instructor")]
-        [Role("Instructor")]
+        // [Role("Instructor")]
+        [Authorize(Roles = "Instructor")]
         public ActionResult<string> InstructorAccess()
         {
             if (User.Identity.IsAuthenticated && User.IsInRole("Instructor"))
@@ -82,8 +132,8 @@ namespace Backend.Controllers
 
 
         [HttpGet("/public")]
-        // [Authorize(Roles = "Public")]
-        [Role("Public")]
+        // [Role("Public")]
+        [AllowAnonymous]
         public ActionResult<string> PublicAccess()
         {
             return Ok("Hi Public");

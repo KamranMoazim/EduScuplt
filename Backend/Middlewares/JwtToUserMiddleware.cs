@@ -32,6 +32,7 @@ namespace Backend.Middlewares
                     if (jsonToken != null)
                     {
                         Console.WriteLine("JWT token is valid++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                        Console.WriteLine("TOKEN Result : " + jsonToken);
                         Console.WriteLine(context.User.Claims.ToString());
 
                         var claims = new ClaimsIdentity(jsonToken.Claims);
@@ -51,6 +52,52 @@ namespace Backend.Middlewares
                             Console.WriteLine($"User Role: {roleClaim.Value}");
                         }
 
+                        // user.Identity.IsAuthenticated
+                        // context.Items["IsAuthenticated"] = true;
+                        // context.Items["Email"] = emailClaim.Value;
+                        // context.Items["Role"] = roleClaim.Value;
+                        // context.Items["User"] = new {
+                        //     Email = emailClaim.Value,
+                        //     Role = roleClaim.Value
+                        // };
+
+
+
+
+                        // Example: Add a new claim to the user
+                        var existingClaims = context.User.Claims.ToList(); // Get existing claims from the user
+
+                        // // existingClaims.Add(new Claim(ClaimTypes.Country, "US")); // Add a new claim
+                        // existingClaims.Add(new Claim("IsAuthenticated", "true"));
+                        // existingClaims.Add(new Claim("Email", emailClaim.Value));
+                        // existingClaims.Add(new Claim("Role", roleClaim.Value));
+
+                        // // Create a new ClaimsIdentity with the updated claims
+                        // var newClaimsIdentity = new ClaimsIdentity(existingClaims, context.User.Identity.AuthenticationType, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+
+                        // // Create a new ClaimsPrincipal with the updated identity
+                        // var newClaimsPrincipal = new ClaimsPrincipal(newClaimsIdentity);
+
+                        // // Update the user in the HttpContext
+                        // context.User = newClaimsPrincipal;
+
+
+                        string roleName = roleClaim.Value; // Replace with your actual role
+                        var rleClaim = new Claim(ClaimTypes.Role, roleName);
+                        existingClaims.Add(rleClaim);
+
+
+                        // Create a new ClaimsIdentity with the updated claims
+                        var newClaimsIdentity = new ClaimsIdentity(existingClaims, context.User.Identity.AuthenticationType, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+
+                        // Create a new ClaimsPrincipal with the updated identity
+                        var newClaimsPrincipal = new ClaimsPrincipal(newClaimsIdentity);
+
+
+                        // Update the user in the HttpContext
+                        context.User = newClaimsPrincipal;
+
+                        
                     }
                     
                 }
@@ -62,6 +109,7 @@ namespace Backend.Middlewares
             }
 
             // Call the next delegate/middleware in the pipeline
+            
             await _next(context);
         }
     }
@@ -73,10 +121,6 @@ namespace Backend.Middlewares
             return builder.UseMiddleware<JwtToUserMiddleware>();
         }
     }
-
-    // In Startup.cs, add the following line in the Configure method:
-    // app.UseJwtToUserMiddleware();
-
 
 }
 

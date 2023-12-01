@@ -1,10 +1,18 @@
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Backend.Models
 {
     public class ProjectAppContext : DbContext
+    // public class ProjectAppContext : IdentityDbContext<ProjectAppContext>
+    // public class ProjectAppContext : IdentityDbContext<User, IdentityRole<int>, int>
+    // public class ProjectAppContext : IdentityDbContext<User, IdentityRole, string>
     {
+        public ProjectAppContext(DbContextOptions<ProjectAppContext> options) : base(options)
+        {
+        }
+
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseDiscount> CourseDiscounts { get; set; }
         public DbSet<CourseProgress> CourseProgress { get; set; }
@@ -23,7 +31,7 @@ namespace Backend.Models
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             // connect to sqlite database
-            options.UseSqlite("Data Source=LocalDatabase.db");
+            options.UseSqlite("Data Source=MyLocalDatabase.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,7 +46,29 @@ namespace Backend.Models
                 .HasOne(m => m.CommentBy)
                 .WithMany(u => u.VideoComments)
                 .HasForeignKey(m => m.ID);
+
+
+            // modelBuilder.Entity<User>().ToTable("AspNetUsers");
+            // modelBuilder.Entity<IdentityRole<int>>().ToTable("AspNetRoles");
+            // modelBuilder.Entity<IdentityUserRole<int>>().ToTable("AspNetUserRoles");
+            // modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("AspNetUserClaims");
+            // modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("AspNetUserLogins");
+            // modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("AspNetRoleClaims");
+            // modelBuilder.Entity<IdentityUserToken<int>>().ToTable("AspNetUserTokens");
+
+            base.OnModelCreating(modelBuilder);
+
+            // SeedRoles(modelBuilder);
         }
+
+        // private void SeedRoles(ModelBuilder modelBuilder)
+        // {
+        //     modelBuilder.Entity<IdentityRole<int>>().HasData(
+        //         new IdentityRole<int> { Id = 1, Name = ProjectEnums.UserType.Admin.ToString(), NormalizedName = "Admin" },
+        //         new IdentityRole<int> { Id = 2, Name = ProjectEnums.UserType.Student.ToString(), NormalizedName = "Student" },
+        //         new IdentityRole<int> { Id = 3, Name = ProjectEnums.UserType.Instructor.ToString(), NormalizedName = "Instructor" }
+        //     );
+        // }
     }
 }
 

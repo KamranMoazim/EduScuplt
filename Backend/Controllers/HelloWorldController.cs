@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -10,6 +11,14 @@ namespace Backend.Controllers
 
         [HttpGet]
         public ActionResult<string> Get()
+        {
+            return "Hello World";
+        }
+        
+        
+        [HttpGet("/authonly")]
+        [Authorize]
+        public ActionResult<string> GetAuth()
         {
             return "Hello World";
         }

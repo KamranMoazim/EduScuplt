@@ -20,16 +20,17 @@ namespace Backend.Repositories
             _mapper = map;
         }
 
-        public IEnumerable<UserDto> GetAll()
+        public IEnumerable<User> GetAll()
         {
             // _mapper.Map<IEnumerable<ProductImage>,IEnumerable<ProductImageDTO>>( _db.productImages.Where(i => i.ProductId == productId).ToList());
-            // return _mapper.Map<IEnumerable<UserDto>,IEnumerable<User>>( _context.Users.ToList());
+            // return _mapper.Map<IEnumerabsle<UserDto>,IEnumerable<User>>( _context.Users.ToList());
             // return (IEnumerable<UserDto>)_mapper.Map<IEnumerable<UserDto>, IEnumerable<User>>((IEnumerable<UserDto>)_context.Users.ToList());
-            return _mapper.Map<List<UserDto>>(_context.Users.ToList());
+            // return _mapper.Map<List<UserDto>>(_context.Users.ToList());
+            return _mapper.Map<List<User>>(_context.Users.ToList());
         }
 
 
-        public UserDto Login(UserDto userDto)
+        public User Login(UserDto userDto)
         {
             // string hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 
@@ -49,13 +50,13 @@ namespace Backend.Repositories
                 throw new InvalidException("Invalid password");
             }
 
-            UserDto returnUserDto = _mapper.Map<User, UserDto>(user);
+            // UserDto returnUserDto = _mapper.Map<User, UserDto>(user);
 
-            return returnUserDto;
+            return user;
         }
 
 
-        public UserDto Register(UserDto userDto)
+        public User Register(UserDto userDto)
         {
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
 
@@ -66,7 +67,8 @@ namespace Backend.Repositories
                 FirstName = "",
                 LastName = "",
                 ProfileURL = "",
-                UserType = ProjectEnums.UserType.Student,
+                // UserType = ProjectEnums.UserType.Student,
+                UserType = "Student",
                 PhoneNumber = "",
                 About = ""
             };
@@ -74,9 +76,9 @@ namespace Backend.Repositories
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            UserDto returnUserDto = _mapper.Map<User, UserDto>(user);
+            // UserDto returnUserDto = _mapper.Map<User, UserDto>(user);
 
-            return returnUserDto;
+            return user;
         }
     }
 }
