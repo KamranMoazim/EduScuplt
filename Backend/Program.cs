@@ -137,7 +137,7 @@ app.UseHttpsRedirection();
 
 
 // my custom middleware for jwt to convert jwt to user 
-app.UseJwtToUserMiddleware();
+// app.UseJwtToUserMiddleware();
 
 
 app.UseIpRateLimiting();
@@ -152,8 +152,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
+
 app.MapControllers();
 app.MapGet("/", () => "Hello World from KAMRAN!");
+
+
 
 // app.Run();
 app.Run("http://0.0.0.0:9090");

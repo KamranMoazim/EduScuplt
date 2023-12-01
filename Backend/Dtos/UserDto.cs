@@ -14,7 +14,7 @@ namespace Backend.Dtos
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
-        // [Required]
+        [Required]
         public string UserType { get; set; }
         // public ProjectEnums.UserType UserType { get; set; }
     }

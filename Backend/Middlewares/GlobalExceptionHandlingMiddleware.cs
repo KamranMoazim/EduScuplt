@@ -10,30 +10,6 @@ namespace Backend.Middlewares
 {
     public class GlobalExceptionHandlingMiddleware : IMiddleware
     {
-        // private readonly RequestDelegate _next;
-
-        // public GlobalExceptionHandlingMiddleware(RequestDelegate next)
-        // {
-        //     this._next = next;
-        // }
-
-        // public async Task InvokeAsync(HttpContext context)
-        // {
-        //     try
-        //     {
-        //         // Call the next delegate/middleware in the pipeline
-        //         await _next(context);
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         // Handle the exception
-        //         // await HandleExceptionAsync(context, ex);
-        //         Console.WriteLine(ex.Message);
-        //         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-        //     }
-        // }
-
-
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
@@ -41,10 +17,37 @@ namespace Backend.Middlewares
             {
                 // Call the next delegate/middleware in the pipeline
                 await next(context);
+                if (context.Response.StatusCode == 403) // Check for Forbidden status code
+                {
+                    Console.WriteLine("**************************************************************");
+                    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    context.Response.ContentType = "application/problem+json";
+                    await context.Response.WriteAsJsonAsync(new ProblemDetails
+                    {
+                        Status = context.Response.StatusCode,
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                        Title = "Forbidden",
+                        Detail = "You do not have permission to access this resource."
+                    });
+                } 
             }
             catch (Exception ex)
             {
-                if (ex is NotFoundException)
+                Console.WriteLine("==========================================================================");
+
+                if (context.Response.StatusCode == 403) // Check for Forbidden status code
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    context.Response.ContentType = "application/problem+json";
+                    await context.Response.WriteAsJsonAsync(new ProblemDetails
+                    {
+                        Status = context.Response.StatusCode,
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                        Title = "Forbidden",
+                        Detail = "You do not have permission to access this resource."
+                    });
+                } 
+                else if (ex is NotFoundException)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     context.Response.ContentType = "application/problem+json";
@@ -90,49 +93,6 @@ namespace Backend.Middlewares
 
 
 
-        public async Task InvokeAsyncOld(HttpContext context, RequestDelegate next)
-        {
-            try
-            {
-                // Call the next delegate/middleware in the pipeline
-                await next(context);
-            }
-            catch (Exception ex)
-            {
-
-                if (ex is NotFoundException)
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    await context.Response.WriteAsJsonAsync(new { message = ex.Message });
-                    return;
-                }
-                else if (ex is InvalidException)
-                {
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    await context.Response.WriteAsJsonAsync(new { message = ex.Message });
-                    return;
-                }
-
-                // Handle the exception
-                // await HandleExceptionAsync(context, ex);
-                Console.WriteLine("==========================================================================");
-                Console.WriteLine(ex.Message);
-
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
-                ProblemDetails problemDetails = new ProblemDetails
-                {
-                    Status = context.Response.StatusCode,
-                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-                    Title = "Internal Server Error",
-                    Detail = ex.Message,
-                };
-
-                // string json = Newtonsoft.Json.JsonConvert.SerializeObject(problemDetails);
-                // context.Response.ContentType = "application/problem+json";
-
-                await context.Response.WriteAsJsonAsync(problemDetails);
-            }
-        }
+    
     }
 }

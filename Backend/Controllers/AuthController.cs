@@ -86,32 +86,12 @@ namespace Backend.Controllers
             return Ok("Hi Student");
         }
 
-        [Authorize(Roles = "Student")]
         [HttpGet("/test")]
+        [Authorize(Roles = "Student")]
         public IActionResult Test()
         {
-            // Get token from header
 
-            string token = Request.Headers["Authorization"];
-
-            if (token.StartsWith("Bearer"))
-            {
-                token = token.Substring("Bearer ".Length).Trim();
-            }
-            var handler = new JwtSecurityTokenHandler();
-
-            // Returns all claims present in the token
-
-            JwtSecurityToken jwt = handler.ReadJwtToken(token);
-
-            var claims = "List of Claims: \n\n";
-
-            foreach (var claim in jwt.Claims)
-            {
-                claims += $"{claim.Type}: {claim.Value}\n";
-            }
-
-            return Ok(claims);
+            return Ok("Test");
         }
 
         [HttpGet("/instructor")]
