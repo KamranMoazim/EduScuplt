@@ -1,4 +1,6 @@
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Backend.Models
 {
     public class StudentPayment
@@ -16,8 +18,10 @@ namespace Backend.Models
         public int CourseDiscountId { get; set; }
 
 
-        public StudentCourses StudentCourses { get; set; }
-        public int StudentCoursesId { get; set; }
+        // [ForeignKey(nameof(StudentCourses))]
+        // [ForeignKey("StudentCourses")]
+        // public StudentCourses StudentCourses { get; set; }
+        // public int StudentCoursesId { get; set; }
 
 
 

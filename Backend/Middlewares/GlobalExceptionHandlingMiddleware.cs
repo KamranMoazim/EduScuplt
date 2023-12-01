@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Backend.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Middlewares
 {
@@ -29,7 +30,36 @@ namespace Backend.Middlewares
                         Title = "Forbidden",
                         Detail = "You do not have permission to access this resource."
                     });
+                }
+                else if (context.Response.StatusCode == 401) // Check for Forbidden status code
+                {
+                    Console.WriteLine("**************************************************************");
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    context.Response.ContentType = "application/problem+json";
+                    await context.Response.WriteAsJsonAsync(new ProblemDetails
+                    {
+                        Status = context.Response.StatusCode,
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                        Title = "Unauthorized",
+                        Detail = "You are not Authorized to access this resource."
+                    });
                 } 
+            }
+            catch (DbUpdateException dbEx)
+            {
+                // Handle database-related exceptions
+                Console.WriteLine($"Database exception: {dbEx.Message}");
+
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/problem+json";
+
+                await context.Response.WriteAsJsonAsync(new ProblemDetails
+                {
+                    Status = context.Response.StatusCode,
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                    Title = "Internal Server Error",
+                    Detail = dbEx.Message,
+                });
             }
             catch (Exception ex)
             {

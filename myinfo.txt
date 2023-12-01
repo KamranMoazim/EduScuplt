@@ -1,0 +1,10 @@
+CreateUser = {
+  "firstName": "kamran",
+  "lastName": "moazim",
+  "email": "kamran@moazim.com",
+  "password": "@123Kamran",
+  "phoneNumber": "03231445958",
+  "userType": "Student"
+}
+
+LoginUser = 

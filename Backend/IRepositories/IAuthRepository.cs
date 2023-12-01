@@ -8,7 +8,8 @@ namespace Backend.IRepositories
     public interface IAuthRepository
     {
         IEnumerable<User> GetAll();
-        User Login(UserDto userDto);
-        User Register(UserDto userDto);
+        User GetUser(int userId);
+        User Login(LoginUserDto userDto);
+        User Register(CreateUserDto userDto);
     }
 }

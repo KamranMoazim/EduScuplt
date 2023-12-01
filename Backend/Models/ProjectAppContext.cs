@@ -60,10 +60,14 @@ namespace Backend.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<StudentCourses>()
-                .HasOne(sc => sc.StudentPayment)
-                .WithOne(sp => sp.StudentCourses)
-                .HasForeignKey<StudentPayment>(sp => sp.StudentCoursesId);
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            // modelBuilder.Entity<StudentCourses>()
+            //     .HasOne(sc => sc.StudentPayment)
+            //     .WithOne(sp => sp.StudentCourses)
+            //     .HasForeignKey<StudentPayment>(sp => sp.StudentCoursesId);
 
             // modelBuilder.Entity<VideoComments>()
             //     .HasOne(m => m.CourseVideo)

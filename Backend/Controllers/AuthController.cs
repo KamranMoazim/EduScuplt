@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
+using Backend.Utils;
+using Backend.Exceptions;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -37,33 +40,85 @@ namespace Backend.Controllers
 
         [HttpPost("/register")]
         [AllowAnonymous]
-        public ActionResult<UserDto> Register([FromBody] UserDto userDto)
+        public ActionResult<CreateResponseDto> Register([FromBody] CreateUserDto userDto)
         {
+
             User user = AuthRepository.Register(userDto);
 
-            return Ok(user);
+            CreateResponseDto createResponseDto = new CreateResponseDto
+            {
+                Status = "Success",
+                Message = "User created successfully"
+            };
+
+            return Ok(createResponseDto);
         }
         
 
         [HttpPost("/login")]
         [AllowAnonymous]
-        public ActionResult<string> Login( [FromBody] UserDto userDto)
+        public ActionResult<LoginUserResponseDto> Login( [FromBody] LoginUserDto userDto)
         {
             User user = AuthRepository.Login(userDto);
 
-            if (user == null)
-            {
-                return BadRequest("Invalid credentials");
-            }
+            // string token = new AuthUtils(userManager, roleManager, _configuration).CreateToken(user);
+            string token = AuthUtils.CreateToken(user);
 
-            string token = new AuthUtils(userManager, roleManager, _configuration).CreateToken(user);
-
-            return Ok(new
+            LoginUserResponseDto loginUserResponseDto = new LoginUserResponseDto
             {
-                token,
-                user
-            });
+                Token = token,
+                User = new ResponseUserDto
+                {
+                    Id = user.ID,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email
+                }
+            };
+
+            return Ok(loginUserResponseDto);
         }
+
+
+        [HttpGet("/me")]
+        [Authorize]
+        public ActionResult<ResponseUserDto> GetMe()
+        {
+            try
+            {
+                // Retrieve user information from the JWT token
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+                
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    // Fetch the user from your repository or database based on the user ID
+                    var user = AuthRepository.GetUser(userId);
+
+                    // Create the response DTO
+                    var responseUserDto = new ResponseUserDto
+                    {
+                        Id = user.ID,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email
+                    };
+
+                    return Ok(responseUserDto);
+                }
+                else
+                {
+                    // If the user ID is not present or invalid, return an unauthorized result
+                    return Unauthorized("Invalid user ID");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                Console.WriteLine($"An error occurred while fetching user details: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
 
         [HttpGet("/student")]
         // [Role("Student")]
@@ -71,18 +126,6 @@ namespace Backend.Controllers
         // [Authorize(Policy = "StudentPolicy")]
         public ActionResult<string> StudentAccess()
         {
-            // return Ok("Hi Student");
-            // Console.WriteLine("User.Identity.IsAuthenticated: " + User.Identity.IsAuthenticated);
-            // Console.WriteLine("User.IsInRole(\"Student\"): " + User.IsInRole("Student"));
-            // if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
-            // {
-            //     return Ok("Hi Student");
-            // }
-            // else
-            // {
-            //     // If the user is not authenticated or does not have the required role, return an unauthorized result
-            //     return Unauthorized("Unauthorized access");
-            // }
             return Ok("Hi Student");
         }
 
@@ -99,15 +142,7 @@ namespace Backend.Controllers
         [Authorize(Roles = "Instructor")]
         public ActionResult<string> InstructorAccess()
         {
-            if (User.Identity.IsAuthenticated && User.IsInRole("Instructor"))
-            {
-                return Ok("Hi Instructor");
-            }
-            else
-            {
-                // If the user is not authenticated or does not have the required role, return an unauthorized result
-                return Unauthorized("Unauthorized access");
-            }
+            return Ok("Hi Instructor");
         }
 
 

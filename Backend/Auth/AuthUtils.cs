@@ -12,26 +12,27 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Auth
 {
-    public class AuthUtils
+    public static class AuthUtils
     {
 
-        private readonly UserManager<User> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IConfiguration _configuration;
+        // private readonly UserManager<User> userManager;
+        // private readonly RoleManager<IdentityRole> roleManager;
+        // private readonly IConfiguration _configuration;
 
-        public AuthUtils(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
-        {
-            this.userManager = userManager;
-            this.roleManager = roleManager;
-            _configuration = configuration;
-        }
+        // public AuthUtils(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        // {
+        //     this.userManager = userManager;
+        //     this.roleManager = roleManager;
+        //     _configuration = configuration;
+        // }
 
 
 
-        public string CreateToken(User user)
+        public static string CreateToken(User user)
         {
             var authClaims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()),
                 new Claim(ClaimTypes.Name, user.Email),
                 // new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 // new Claim(ClaimTypes.Role, user.UserType.ToString())
