@@ -1,5 +1,5 @@
 
-namespace Backend.Dtos
+namespace Backend.Dtos.UserDtos
 {
     public class LoginUserResponseDto
     {

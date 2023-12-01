@@ -1,7 +1,7 @@
 
 
 using Backend.Models;
-using Backend.Dtos;
+using Backend.Dtos.UserDtos;
 
 namespace Backend.IRepositories
 {

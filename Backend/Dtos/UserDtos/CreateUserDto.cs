@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using Backend.Models;
 
-namespace Backend.Dtos
+namespace Backend.Dtos.UserDtos
 {
     public class CreateUserDto
     {

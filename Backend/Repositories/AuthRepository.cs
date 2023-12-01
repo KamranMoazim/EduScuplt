@@ -1,7 +1,7 @@
 
 using Backend.IRepositories;
 using Backend.Models;
-using Backend.Dtos;
+using Backend.Dtos.UserDtos;
 using AutoMapper;
 using Backend.Exceptions;
 using Backend.Utils;

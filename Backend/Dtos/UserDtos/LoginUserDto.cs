@@ -2,7 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Backend.Dtos
+namespace Backend.Dtos.UserDtos
 {
     public class LoginUserDto
     {
