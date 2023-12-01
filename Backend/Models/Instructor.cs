@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Backend.Models
 {
@@ -16,11 +13,22 @@ namespace Backend.Models
 
 
 
+        // Admin Related Properties
+        public bool IsApproved { get; set; }
+        public Admin ApprovedBy { get; set; }
+        public int ApprovedById { get; set; }
+
+
+
+
+
         public User User { get; set; }
         public int UserId { get; set; }
 
         public List<Course> Courses { get; set; }
 
         public List<CourseDiscount> CourseDiscounts { get; set; }
+
+        public List<InstructorPayment> InstructorPayments { get; set; }
     }
 }

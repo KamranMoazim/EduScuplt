@@ -44,7 +44,7 @@ namespace Backend.Models
 
         // becuase any user can comment on a video , thats why we have to add this property in user model
         // public List<VideoComments> VideoComments { get; set; }
-        public List<Notification> Notifications { get; set; }
+        // public List<Notification> Notifications { get; set; }
 
 
 

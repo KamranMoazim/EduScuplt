@@ -7,7 +7,6 @@ namespace Backend.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
-        public bool IsPublic { get; set; }
         public string ThumbnailURL { get; set; }
         public DateTime ReleaseDate { get; set; }
 
@@ -28,15 +27,18 @@ namespace Backend.Models
         public List<CourseDiscount> CourseDiscounts { get; set; }
 
 
+        // Course Folders Related Properties
+        public List<CourseFolders> CourseFolders { get; set; }
+
+
+
+
+
+
 
         public List<Tags> Tags { get; set; }
 
         public List<CourseVideo> CourseVideos { get; set; }
-
-        // public List<Payment> Payments { get; set; }
-
-
-        // public List<CourseProgress> CourseProgress { get; set; }
 
     }
 }

@@ -15,9 +15,9 @@ namespace Backend.Models
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseDiscount> CourseDiscounts { get; set; }
+        public DbSet<CourseFolders> CourseFolders { get; set; }
         // public DbSet<CourseProgress> CourseProgress { get; set; } // adjusted in StudentCourses
         public DbSet<CourseVideo> CourseVideos { get; set; }
-        public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Interests> Interests { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         // public DbSet<Payment> Payments { get; set; } // adjusted in StudentCourses
@@ -31,6 +31,11 @@ namespace Backend.Models
 
 
         public DbSet<Admin> Admin { get; set; }
+
+
+        public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<InstructorPayment> InstructorPayments { get; set; }
+
 
 
         public DbSet<Student> Student { get; set; }

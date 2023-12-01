@@ -9,5 +9,8 @@ namespace Backend.Models
     {
         public int ID { get; set; }
         public string CourseDescription { get; set; }
+
+        public Admin Admin { get; set; }
+        public int AdminId { get; set; }
     }
 }
