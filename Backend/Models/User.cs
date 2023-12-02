@@ -2,7 +2,6 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Models
 {
@@ -18,6 +17,7 @@ namespace Backend.Models
         [StringLength(50, ErrorMessage = "Last name must be at most 50 characters.")]
         public string LastName { get; set; }
 
+        [Url(ErrorMessage = "Profile URL must be a valid URL.")]
         public string? ProfileURL { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]

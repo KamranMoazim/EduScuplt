@@ -1,17 +1,13 @@
 using AutoMapper;
 using AspNetCoreRateLimit;
-using Backend.IRepositories;
 using Backend.Mapper;
 using Backend.Models;
-using Backend.Repositories;
 using Backend.Middlewares;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Identity;
 using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Backend.Auth;
+using Backend.Repositories.Auth;
 
 
 
@@ -137,7 +133,7 @@ app.UseHttpsRedirection();
 
 
 // my custom middleware for jwt to convert jwt to user 
-// app.UseJwtToUserMiddleware();
+app.UseJwtToUserMiddleware();
 
 
 app.UseIpRateLimiting();

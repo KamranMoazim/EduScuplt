@@ -39,11 +39,12 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ApprovedById")
+                    b.Property<int?>("ApprovedById")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("InstructorId")
@@ -59,11 +60,11 @@ namespace Backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ThumbnailURL")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -83,6 +84,7 @@ namespace Backend.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
+                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("CourseId")
@@ -117,6 +119,7 @@ namespace Backend.Migrations
 
                     b.Property<string>("FolderName")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -137,6 +140,7 @@ namespace Backend.Migrations
 
                     b.Property<string>("CourseDescription")
                         .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -152,7 +156,7 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CourseFoldersID")
+                    b.Property<int?>("CourseFoldersId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CourseId")
@@ -164,6 +168,7 @@ namespace Backend.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("VideoURL")
@@ -172,7 +177,7 @@ namespace Backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CourseFoldersID");
+                    b.HasIndex("CourseFoldersId");
 
                     b.HasIndex("CourseId");
 
@@ -186,14 +191,14 @@ namespace Backend.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("AccountDetails")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AccountNo")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ApprovedById")
+                    b.Property<int?>("ApprovedById")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsApproved")
@@ -254,6 +259,7 @@ namespace Backend.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -272,6 +278,7 @@ namespace Backend.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NotificationType")
@@ -354,14 +361,20 @@ namespace Backend.Migrations
                     b.Property<DateTime>("CourseStartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsReviewed")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("LastProgressDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Rating")
+                    b.Property<int?>("Rating")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Review")
-                        .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("StudentId")
@@ -411,7 +424,7 @@ namespace Backend.Migrations
                     b.Property<double>("ActualAmount")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("CourseDiscountId")
+                    b.Property<int?>("CourseDiscountId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CourseId")
@@ -448,8 +461,9 @@ namespace Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Tag")
+                    b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -512,6 +526,7 @@ namespace Backend.Migrations
 
                     b.Property<string>("Comment")
                         .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("CommentById")
@@ -570,9 +585,7 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.Admin", "ApprovedBy")
                         .WithMany("Courses")
-                        .HasForeignKey("ApprovedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApprovedById");
 
                     b.HasOne("Backend.Models.Instructor", "Instructor")
                         .WithMany("Courses")
@@ -628,9 +641,9 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.CourseVideo", b =>
                 {
-                    b.HasOne("Backend.Models.CourseFolders", null)
+                    b.HasOne("Backend.Models.CourseFolders", "CourseFolders")
                         .WithMany("CourseVideos")
-                        .HasForeignKey("CourseFoldersID");
+                        .HasForeignKey("CourseFoldersId");
 
                     b.HasOne("Backend.Models.Course", "Course")
                         .WithMany("CourseVideos")
@@ -639,15 +652,15 @@ namespace Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+
+                    b.Navigation("CourseFolders");
                 });
 
             modelBuilder.Entity("Backend.Models.Instructor", b =>
                 {
                     b.HasOne("Backend.Models.Admin", "ApprovedBy")
                         .WithMany("Instructors")
-                        .HasForeignKey("ApprovedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApprovedById");
 
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany()
@@ -774,9 +787,7 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.CourseDiscount", "CourseDiscount")
                         .WithMany()
-                        .HasForeignKey("CourseDiscountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseDiscountId");
 
                     b.HasOne("Backend.Models.Course", "Course")
                         .WithMany()

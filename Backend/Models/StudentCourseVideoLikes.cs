@@ -5,7 +5,7 @@ namespace Backend.Models
     public class StudentCourseVideoLikes
     {
         public int ID { get; set; }
-        public bool IsLiked { get; set; }
+        public bool IsLiked { get; set; } = true;
 
 
         public Student Student { get; set; }

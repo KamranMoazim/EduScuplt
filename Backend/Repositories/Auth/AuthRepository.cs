@@ -1,5 +1,4 @@
 
-using Backend.IRepositories;
 using Backend.Models;
 using Backend.Dtos.UserDtos;
 using AutoMapper;
@@ -7,7 +6,7 @@ using Backend.Exceptions;
 using Backend.Utils;
 
 
-namespace Backend.Repositories
+namespace Backend.Repositories.Auth
 {
 
     public class AuthRepository : IAuthRepository
@@ -108,5 +107,16 @@ namespace Backend.Repositories
             return user;
         }
 
+        public User GetUserByEmail(string email)
+        {
+            User user = _context.Users.FirstOrDefault(u => u.Email == email);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+
+            return user;
+        }
     }
 }

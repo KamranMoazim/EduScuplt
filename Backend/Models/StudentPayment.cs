@@ -1,4 +1,5 @@
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
@@ -6,16 +7,19 @@ namespace Backend.Models
     public class StudentPayment
     {
         public int ID { get; set; }
+
+        [Required(ErrorMessage = "Stripe Payment ID is required.")]
         public string StripePaymentID { get; set; }
-        public double ActualAmount { get; set; }
-        public bool IsDiscounted { get; set; }
-        public double DiscountedAmount { get; set; }
-        public double PaidAmount { get; set; }
+
+        public double ActualAmount { get; set; } = 0.0;
+        public bool IsDiscounted { get; set; } = false;
+        public double DiscountedAmount { get; set; } = 0.0;
+        public double PaidAmount { get; set; } = 0.0;
         public DateTime PayingDate { get; set; }
 
 
         public CourseDiscount CourseDiscount { get; set; }
-        public int CourseDiscountId { get; set; }
+        public int? CourseDiscountId { get; set; }
 
 
         // [ForeignKey(nameof(StudentCourses))]
@@ -28,7 +32,7 @@ namespace Backend.Models
         public Course Course { get; set; }
         public int CourseId { get; set; }
 
-        
+
 
 
 

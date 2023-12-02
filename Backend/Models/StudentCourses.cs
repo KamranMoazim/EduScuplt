@@ -1,5 +1,7 @@
 
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Backend.Models
 {
     public class StudentCourses
@@ -8,13 +10,21 @@ namespace Backend.Models
 
         public DateTime CourseStartDate { get; set; }
         public DateTime CourseCompleteDate { get; set; }
-        public int Rating { get; set; }
-        public string Review { get; set; }
+        public bool IsCompleted { get; set; } = false;
+        public bool IsReviewed { get; set; } = false;
+
+
+
+        [Range(0, 5, ErrorMessage = "Rating must be between 0 and 5.")]
+        public int? Rating { get; set; }
+
+        [StringLength(250, ErrorMessage = "Review must be at most 250 characters.")]
+        public string? Review { get; set; }
 
 
         // Course Progress Related Properties
-        public double CourseCompleteProgressPercentage { get; set; }
-        public DateTime LastProgressDate { get; set; }
+        public double CourseCompleteProgressPercentage { get; set; } = 0.0;
+        public DateTime LastProgressDate { get; set; } = DateTime.Now;
 
 
         // Payment Related Properties

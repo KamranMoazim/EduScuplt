@@ -1,19 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Backend.Dtos;
-using Backend.IRepositories;
+
 using Backend.Models;
-using Backend.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using System.IdentityModel.Tokens.Jwt;
-using Backend.Utils;
-using Backend.Exceptions;
 using System.Security.Claims;
 using Backend.Dtos.UserDtos;
+using Backend.Repositories.Auth;
+using Backend.Utils;
 
 namespace Backend.Controllers
 {
@@ -21,9 +13,6 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IConfiguration _configuration;
         public IAuthRepository AuthRepository { get; set; }
 
         public AuthController(IAuthRepository authRepository)
@@ -87,6 +76,12 @@ namespace Backend.Controllers
         {
             try
             {
+                // var userId = HttpContext.Items["UserId"];
+                // var userName = HttpContext.Items["UserName"];
+                // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
                 // Retrieve user information from the JWT token
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
                 
@@ -121,6 +116,83 @@ namespace Backend.Controllers
         }
 
 
+
+
+        [HttpPost("/forgot-password")]
+        [AllowAnonymous]
+        public ActionResult<ForgotPasswordResponseDto> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+        {
+            try
+            {
+                // Check if the email exists in your system
+                var user = AuthRepository.GetUserByEmail(forgotPasswordDto.Email);
+
+                if (user == null)
+                {
+                    // Return a generic response to avoid leaking information about registered emails
+                    return Ok(new ForgotPasswordResponseDto
+                    {
+                        Status = "Success",
+                        Message = "If the email exists in our system, we have sent a password reset link to your email."
+                    });
+                }
+
+                // Generate a password reset token
+                string resetToken = AuthUtils.GeneratePasswordResetToken(user);
+
+                // Here, you might want to send an email to the user with the reset link or token
+                // Include the reset token in the reset link or use it to validate the reset request
+
+                // In a real-world scenario, you would send an email with a link like:
+                // "https://yourdomain.com/reset-password?token=resetToken"
+
+                return Ok(new ForgotPasswordResponseDto
+                {
+                    Status = "Success",
+                    Message = "If the email exists in our system, we have sent a password reset link to your email."
+                });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                Console.WriteLine($"An error occurred while processing the forgot password request: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpGet("/student")]
         // [Role("Student")]
         [Authorize(Roles = "Student")]
@@ -131,7 +203,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("/test")]
-        [Authorize(Roles = "Student")]
+        [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult Test()
         {
 

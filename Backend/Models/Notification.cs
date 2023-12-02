@@ -1,5 +1,6 @@
 
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Backend.Models
@@ -8,7 +9,10 @@ namespace Backend.Models
     {
         public int ID { get; set; }
         public DateTime TimeStamp { get; set; }
-        public bool IsRead { get; set; }
+        public bool IsRead { get; set; } = false;
+
+        [Required(ErrorMessage = "Notification Message is required.")]
+        [StringLength(100, ErrorMessage = "Notification Message must be at most 100 characters.")]
         public string Message { get; set; }
 
 
