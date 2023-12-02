@@ -15,9 +15,6 @@ RUN dotnet restore "./Backend.csproj"
 COPY ./Backend .
 RUN dotnet build "./Backend.csproj" -c Release -o /app/build
 
-# Add EF migrations and update the database
-RUN dotnet ef migrations add Init -c ProjectAppContext
-RUN dotnet ef database update -c ProjectAppContext
 
 FROM build AS publish
 RUN dotnet publish "Backend.csproj" -c Release -o /app/publish /p:UseAppHost=false

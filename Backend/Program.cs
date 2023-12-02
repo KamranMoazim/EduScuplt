@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Backend.Repositories.AuthRepo;
 using Backend.Repositories.CourseRepo;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -129,6 +130,18 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+// Database initialization
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ProjectAppContext>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
 
 
 app.UseHttpsRedirection();
