@@ -158,3 +158,13 @@ app.MapGet("/", () => "Hello World from KAMRAN!");
 
 app.Run();
 // app.Run("http://0.0.0.0:9090");
+
+/*
+  "Kestrel": {
+    "EndPoints": {
+      "Http": {
+        "Url": "http://localhost:9090"
+      }
+    }
+  },
+*/
