@@ -41,7 +41,7 @@ namespace Backend.Utils
                 IssuedAt = DateTime.UtcNow,
                 Issuer = "http://localhost:61955",
                 Audience = "http://localhost:4200",
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddHours(30),
                 SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256Signature),
             };
             

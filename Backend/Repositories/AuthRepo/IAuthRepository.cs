@@ -3,7 +3,7 @@
 using Backend.Models;
 using Backend.Dtos.UserDtos;
 
-namespace Backend.Repositories.Auth
+namespace Backend.Repositories.AuthRepo
 {
     public interface IAuthRepository
     {

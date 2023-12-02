@@ -14,6 +14,9 @@ namespace Backend.Dtos.CourseDtos
         [Required(ErrorMessage = "Course Description is required.")]
         [StringLength(1000, ErrorMessage = "Course Description must be at most 1000 characters.")]
         public string Description { get; set; }
+
+        [Required(ErrorMessage = "Course Price is required.")]
+        [Range(50, 1000, ErrorMessage = "Course Price must be between 50 and 1000.")]
         public double Price { get; set; } = 0.0;
 
         [Url(ErrorMessage = "Video URL must be a valid URL.")]

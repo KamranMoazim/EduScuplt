@@ -25,7 +25,7 @@ namespace Backend.Models
 
         // Admin Related Properties
         public bool IsApproved { get; set; } = false;
-        public Admin ApprovedBy { get; set; }
+        public Admin? ApprovedBy { get; set; }
         public int? ApprovedById { get; set; }
 
 

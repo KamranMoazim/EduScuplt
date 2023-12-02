@@ -7,7 +7,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Backend.Repositories.Auth;
+using Backend.Repositories.AuthRepo;
+using Backend.Repositories.CourseRepo;
 
 
 
@@ -28,6 +29,7 @@ builder.Services.AddDbContext<ProjectAppContext>();
 //     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 
 
@@ -154,5 +156,5 @@ app.MapGet("/", () => "Hello World from KAMRAN!");
 
 
 
-// app.Run();
-app.Run("http://0.0.0.0:9090");
+app.Run();
+// app.Run("http://0.0.0.0:9090");

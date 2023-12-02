@@ -2,6 +2,7 @@
 using System.Net;
 using Backend.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Middlewares
@@ -44,6 +45,7 @@ namespace Backend.Middlewares
             }
             catch (DbUpdateException dbEx)
             {
+
                 // Handle database-related exceptions
                 Console.WriteLine($"Database exception: {dbEx.Message}");
 

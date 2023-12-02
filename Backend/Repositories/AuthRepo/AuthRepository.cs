@@ -6,7 +6,7 @@ using Backend.Exceptions;
 using Backend.Utils;
 
 
-namespace Backend.Repositories.Auth
+namespace Backend.Repositories.AuthRepo
 {
 
     public class AuthRepository : IAuthRepository
@@ -23,6 +23,8 @@ namespace Backend.Repositories.Auth
         public IEnumerable<User> GetAll()
         {
             // return _mapper.Map<List<UserDto>>(_context.Users.ToList());
+            // _context.Users.RemoveRange(_context.Users);
+            // _context.SaveChanges();
             return _mapper.Map<List<User>>(_context.Users.ToList());
         }
 
@@ -83,10 +85,46 @@ namespace Backend.Repositories.Auth
                 // About = ""
             };
 
-            // AppUtils.ExecuteWithExceptionHandling(() => _context.Users.Add(user));
-
             _context.Users.Add(user);
             _context.SaveChanges();
+
+            if (userDto.UserType == "Instructor")
+            {
+                Instructor instructor = new Instructor
+                {
+                    Id = user.ID,
+                    AccountNo = "",
+                    AccountDetails = "",
+                    User = user
+                };
+
+                _context.Instructors.Add(instructor);
+            }
+            else if (userDto.UserType == "Student")
+            {
+                Student student = new Student
+                {
+                    Id = user.ID,
+                    User = user
+                };
+
+                _context.Student.Add(student);
+            }
+            else if (userDto.UserType == "Admin")
+            {
+                Admin admin = new Admin
+                {
+                    Id = user.ID,
+                    User = user
+                };
+
+                _context.Admin.Add(admin);
+            }
+
+            // AppUtils.ExecuteWithExceptionHandling(() => _context.Users.Add(user));
+
+            _context.SaveChanges();
+            
 
             // UserDto returnUserDto = _mapper.Map<User, UserDto>(user);
 

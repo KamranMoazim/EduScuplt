@@ -1,7 +1,7 @@
 CreateStudentUser = {
   "firstName": "kamran",
   "lastName": "moazim",
-  "email": "kamran@moazim.com",
+  "email": "skamran@moazim.com",
   "password": "@123Kamran",
   "phoneNumber": "03231445958",
   "userType": "Student"

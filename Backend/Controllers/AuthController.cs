@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Backend.Dtos.UserDtos;
-using Backend.Repositories.Auth;
+using Backend.Repositories.AuthRepo;
 using Backend.Utils;
 using Backend.Dtos.GenericDTOs;
 
@@ -21,7 +21,7 @@ namespace Backend.Controllers
             AuthRepository = authRepository;
         }
 
-        [HttpGet("/users")]
+        [HttpGet("users")]
         [AllowAnonymous]
         public ActionResult<IEnumerable<UserDto>> GetAllUsers()
         {
@@ -29,7 +29,7 @@ namespace Backend.Controllers
         }
 
 
-        [HttpPost("/register")]
+        [HttpPost("register")]
         [AllowAnonymous]
         public ActionResult<CreateResponseDto> Register([FromBody] CreateUserDto userDto)
         {
@@ -46,7 +46,7 @@ namespace Backend.Controllers
         }
         
 
-        [HttpPost("/login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         public ActionResult<LoginUserResponseDto> Login( [FromBody] LoginUserDto userDto)
         {
@@ -71,7 +71,7 @@ namespace Backend.Controllers
         }
 
 
-        [HttpGet("/me")]
+        [HttpGet("me")]
         [Authorize]
         public ActionResult<UserDto> GetMe()
         {
@@ -119,7 +119,7 @@ namespace Backend.Controllers
 
 
 
-        [HttpPost("/forgot-password")]
+        [HttpPost("forgot-password")]
         [AllowAnonymous]
         public ActionResult<ForgotPasswordResponseDto> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
         {
@@ -194,7 +194,7 @@ namespace Backend.Controllers
 
 
 
-        [HttpGet("/student")]
+        [HttpGet("student")]
         // [Role("Student")]
         [Authorize(Roles = "Student")]
         // [Authorize(Policy = "StudentPolicy")]
@@ -203,7 +203,7 @@ namespace Backend.Controllers
             return Ok("Hi Student");
         }
 
-        [HttpGet("/test")]
+        [HttpGet("test")]
         [Authorize(Roles = "Student, Instructor, Admin")]
         public IActionResult Test()
         {
@@ -211,7 +211,7 @@ namespace Backend.Controllers
             return Ok("Test");
         }
 
-        [HttpGet("/instructor")]
+        [HttpGet("instructor")]
         // [Role("Instructor")]
         [Authorize(Roles = "Instructor")]
         public ActionResult<string> InstructorAccess()
@@ -220,7 +220,7 @@ namespace Backend.Controllers
         }
 
 
-        [HttpGet("/public")]
+        [HttpGet("public")]
         // [Role("Public")]
         [AllowAnonymous]
         public ActionResult<string> PublicAccess()
