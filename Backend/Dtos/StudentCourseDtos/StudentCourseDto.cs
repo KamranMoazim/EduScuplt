@@ -2,7 +2,7 @@
 
 namespace Backend.Dtos.StudentCourseDtos
 {
-    public class StudentCourseDtos
+    public class StudentCourseDto
     {
         
     }

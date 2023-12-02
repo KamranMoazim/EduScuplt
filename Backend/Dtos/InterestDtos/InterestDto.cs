@@ -2,8 +2,7 @@
 
 namespace Backend.Dtos.InterestDtos
 {
-    public class InterestDtos
+    public class InterestDto
     {
-        
     }
 }

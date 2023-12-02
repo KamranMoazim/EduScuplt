@@ -2,7 +2,7 @@
 
 namespace Backend.Dtos.CourseVideoDtos
 {
-    public class CourseVideoDtos
+    public class CourseVideoDto
     {
         
     }

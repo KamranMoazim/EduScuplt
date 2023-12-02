@@ -2,7 +2,7 @@
 
 namespace Backend.Dtos.NotificationDtos
 {
-    public class NotificationDtos
+    public class NotificationDto
     {
         
     }

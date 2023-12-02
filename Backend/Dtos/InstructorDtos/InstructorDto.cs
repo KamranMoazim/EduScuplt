@@ -1,7 +1,7 @@
 
 namespace Backend.Dtos.InstructorDtos
 {
-    public class InstructorDtos
+    public class InstructorDto
     {
         
     }

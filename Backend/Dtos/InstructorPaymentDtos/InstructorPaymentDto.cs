@@ -2,7 +2,7 @@
 
 namespace Backend.Dtos.InstructorPaymentDtos
 {
-    public class InstructorPaymentDtos
+    public class InstructorPaymentDto
     {
         
     }

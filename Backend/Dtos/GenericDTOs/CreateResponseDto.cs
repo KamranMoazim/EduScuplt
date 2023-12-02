@@ -1,6 +1,6 @@
 
 
-namespace Backend.Dtos.UserDtos
+namespace Backend.Dtos.GenericDTOs
 {
     public class CreateResponseDto
     {

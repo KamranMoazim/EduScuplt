@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Backend.Dtos.UserDtos;
 using Backend.Repositories.Auth;
 using Backend.Utils;
+using Backend.Dtos.GenericDTOs;
 
 namespace Backend.Controllers
 {
@@ -57,7 +58,7 @@ namespace Backend.Controllers
             LoginUserResponseDto loginUserResponseDto = new LoginUserResponseDto
             {
                 Token = token,
-                User = new ResponseUserDto
+                User = new UserDto
                 {
                     Id = user.ID,
                     FirstName = user.FirstName,
@@ -72,7 +73,7 @@ namespace Backend.Controllers
 
         [HttpGet("/me")]
         [Authorize]
-        public ActionResult<ResponseUserDto> GetMe()
+        public ActionResult<UserDto> GetMe()
         {
             try
             {
@@ -91,7 +92,7 @@ namespace Backend.Controllers
                     var user = AuthRepository.GetUser(userId);
 
                     // Create the response DTO
-                    var responseUserDto = new ResponseUserDto
+                    var responseUserDto = new UserDto
                     {
                         Id = user.ID,
                         FirstName = user.FirstName,

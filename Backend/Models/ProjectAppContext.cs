@@ -41,7 +41,7 @@ namespace Backend.Models
         public DbSet<Student> Student { get; set; }
         public DbSet<StudentInterests> StudentInterests { get; set; }
         public DbSet<StudentCourses> StudentCourses { get; set; }
-        public DbSet<StudentCourseVideoLikes> StudentCourseVideoLikes { get; set; }
+        // public DbSet<StudentCourseVideoLikes> StudentCourseVideoLikes { get; set; }
         public DbSet<StudentPayment> StudentPayment { get; set; }
 
 

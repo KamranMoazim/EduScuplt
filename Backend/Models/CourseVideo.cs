@@ -28,7 +28,7 @@ namespace Backend.Models
         public int? CourseFoldersId { get; set; }
 
 
-        public List<StudentCourseVideoLikes> StudentCourseVideoLikes { get; set; }
+        // public List<StudentCourseVideoLikes> StudentCourseVideoLikes { get; set; }
 
         public List<VideoComments> VideoComments { get; set; }
 
