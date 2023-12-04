@@ -1,0 +1,13 @@
+
+AuthController
+domain.com/api/Auth/users                        --- to get all users
+domain.com/api/Auth/register                     --- to post user for register
+domain.com/api/Auth/login                        --- to post user for login
+domain.com/api/Auth/me                           --- to get user
+domain.com/api/Auth/forgot-password              --- to send email to at user email
+
+
+CourseController
+domain.com/api/Course/courses                    --- to get all courses
+domain.com/api/Course/courses/{id}               --- to get particular course
+domain.com/api/Course/create-course              --- to post new course

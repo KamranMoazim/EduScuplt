@@ -3,6 +3,7 @@
 using AutoMapper;
 using Backend.Dtos.CourseDtos;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Repositories.CourseRepo
 {
@@ -40,6 +41,13 @@ namespace Backend.Repositories.CourseRepo
             return newCourse;
         }
 
+        public Course UpdateCourse(Course course)
+        {
+            _context.Courses.Update(course);
+            _context.SaveChanges();
+            return _context.Courses.FirstOrDefault(c => c.ID == course.ID)!;
+        }
+
         public Course GetCourseById(int id)
         {
             Course? course = _context.Courses.FirstOrDefault(c => c.ID == id);
@@ -49,5 +57,26 @@ namespace Backend.Repositories.CourseRepo
             }
             return course;
         }
+
+
+        public IEnumerable<Course> GetAllCoursesOfInstructor(int instructorId)
+        {
+            return _context.Courses.Where(c => c.InstructorId == instructorId).ToList();
+        }
+
+
+        public IEnumerable<Course> GetAllStudentsBoughtCourses(int studentId)
+        {
+            return _context.StudentCourses.Where(sc => sc.StudentId == studentId).Select(sc => sc.Course).ToList();
+        }
+
+
+        public IEnumerable<Course> GetAllCoursesForAdminApproval()
+        {
+            return _context.Courses.Where(c => c.IsApproved == false).ToList();
+        }
+
+        
+        
     }
 }

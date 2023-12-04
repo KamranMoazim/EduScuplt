@@ -19,8 +19,8 @@ namespace Backend.Middlewares
                 if (context.Response.StatusCode == 403) // Check for Forbidden status code
                 {
                     Console.WriteLine("**************************************************************");
-                    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                    context.Response.ContentType = "application/problem+json";
+                    // context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    // context.Response.ContentType = "application/problem+json";
                     await context.Response.WriteAsJsonAsync(new ProblemDetails
                     {
                         Status = context.Response.StatusCode,
@@ -32,8 +32,8 @@ namespace Backend.Middlewares
                 else if (context.Response.StatusCode == 401) // Check for Forbidden status code
                 {
                     Console.WriteLine("**************************************************************");
-                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    context.Response.ContentType = "application/problem+json";
+                    // context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    // context.Response.ContentType = "application/problem+json";
                     await context.Response.WriteAsJsonAsync(new ProblemDetails
                     {
                         Status = context.Response.StatusCode,
@@ -49,8 +49,8 @@ namespace Backend.Middlewares
                 // Handle database-related exceptions
                 Console.WriteLine($"Database exception: {dbEx.Message}");
 
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                context.Response.ContentType = "application/problem+json";
+                // context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                // context.Response.ContentType = "application/problem+json";
 
                 await context.Response.WriteAsJsonAsync(new ProblemDetails
                 {
@@ -66,8 +66,8 @@ namespace Backend.Middlewares
 
                 if (context.Response.StatusCode == 403) // Check for Forbidden status code
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                    context.Response.ContentType = "application/problem+json";
+                    // context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    // context.Response.ContentType = "application/problem+json";
                     await context.Response.WriteAsJsonAsync(new ProblemDetails
                     {
                         Status = context.Response.StatusCode,
@@ -78,8 +78,8 @@ namespace Backend.Middlewares
                 } 
                 else if (ex is NotFoundException)
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    context.Response.ContentType = "application/problem+json";
+                    // context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    // context.Response.ContentType = "application/problem+json";
                     await context.Response.WriteAsJsonAsync(new ProblemDetails
                     {
                         Status = context.Response.StatusCode,
@@ -90,8 +90,8 @@ namespace Backend.Middlewares
                 }
                 else if (ex is InvalidException)
                 {
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    context.Response.ContentType = "application/problem+json";
+                    // context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    // context.Response.ContentType = "application/problem+json";
                     await context.Response.WriteAsJsonAsync(new ProblemDetails
                     {
                         Status = context.Response.StatusCode,
@@ -105,8 +105,8 @@ namespace Backend.Middlewares
                     // Log the unexpected exception
                     Console.WriteLine($"Unexpected error: {ex}");
 
-                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    context.Response.ContentType = "application/problem+json";
+                    // context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    // context.Response.ContentType = "application/problem+json";
 
                     await context.Response.WriteAsJsonAsync(new ProblemDetails
                     {

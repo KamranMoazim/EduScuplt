@@ -28,7 +28,6 @@ namespace Backend.Middlewares
                     {
                         Console.WriteLine("JWT token is valid++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                         Console.WriteLine("TOKEN Result : " + jsonToken);
-                        Console.WriteLine(context.User.Claims.ToString());
 
                         var claims = new ClaimsIdentity(jsonToken.Claims);
                         context.User = new ClaimsPrincipal(claims);
@@ -68,7 +67,6 @@ namespace Backend.Middlewares
                         // Update the user in the HttpContext
                         context.User = newClaimsPrincipal;
 
-                        
                     }
                     
                 }

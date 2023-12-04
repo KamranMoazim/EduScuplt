@@ -3,17 +3,17 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 9090
+EXPOSE 80
 EXPOSE 443
 ENV SimpleProperty="hello-from-BASE-dockerfile"
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
-COPY ["Backend.csproj", "."]
-RUN dotnet restore "Backend.csproj"
-COPY . ./
-RUN dotnet build "Backend.csproj" -c Release -o /app/build
+COPY ["./Backend/Backend.csproj", "./"]
+RUN dotnet restore "./Backend.csproj"
+COPY ./Backend .
+RUN dotnet build "./Backend.csproj" -c Release -o /app/build
 
 
 FROM build AS publish
@@ -24,3 +24,12 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 ENV SimpleProperty="hello-from-FINAL-dockerfile"
 ENTRYPOINT ["dotnet", "Backend.dll"]
+
+
+
+
+
+
+
+
+dckr_pat_5aeKqvmvT2_hTeVdGxhIoLN1RaQ
