@@ -9,6 +9,7 @@ namespace Backend.Repositories.CourseRepo
         Course CreateCourse(CreateCourseInfoDto course);
         Course UpdateCourse(Course course);
         IEnumerable<Course> AllCourses();
+        IEnumerable<CourseInfoDto> GetCoursesByTagName(string tagName);
         Course GetCourseById(int id);
         IEnumerable<Course> GetAllCoursesOfInstructor(int instructorId);
         IEnumerable<Course> GetAllStudentsBoughtCourses(int studentId);

@@ -1,10 +1,12 @@
 
 
+using Backend.Dtos.CourseDtos;
 using Backend.Dtos.TagDtos;
+using Backend.Models;
 
 namespace Backend.Repositories.TagRepo
 {
-    public interface ITagRepo
+    public interface ITagRepository
     {
         CreateTagDto CreateTag(CreateTagDto tagDto);
         bool DeleteTagById(int id);

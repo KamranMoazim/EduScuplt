@@ -2,6 +2,7 @@
 
 using AutoMapper;
 using Backend.Dtos.CourseDtos;
+using Backend.Exceptions;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,18 @@ namespace Backend.Repositories.CourseRepo
         public IEnumerable<Course> AllCourses()
         {
             return _context.Courses.ToList();
+        }
+
+        public IEnumerable<CourseInfoDto> GetCoursesByTagName(string tagName)
+        {
+            Tags? tag = _context.Tags.Where(t => t.Name == tagName).FirstOrDefault();
+
+            if (tag == null)
+            {
+                throw new NotFoundException("Tag not found");
+            }
+
+            return _mapper.Map<IEnumerable<CourseInfoDto>>(_context.Courses.Where(c => c.Tags.Contains(tag)));
         }
 
         public Course CreateCourse(CreateCourseInfoDto course)

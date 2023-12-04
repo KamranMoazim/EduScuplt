@@ -12,5 +12,6 @@ namespace Backend.Repositories.CourseFolderRepo
         CourseFoldersDto UpdateCourseFolder(UpdateCourseInfoDto courseFolder);
         bool DeleteCourseFolderById(int id);
         IEnumerable<CourseFoldersDto> GetAllCourseFoldersOfCourse(int courseId);
+        CourseFoldersDto GetCourseFolderByIdAlongWithCourseVideos(int id);
     }
 }

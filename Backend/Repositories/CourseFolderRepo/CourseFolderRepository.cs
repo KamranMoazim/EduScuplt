@@ -94,6 +94,18 @@ namespace Backend.Repositories.CourseFolderRepo
             return _mapper.Map<IEnumerable<CourseFoldersDto>>(courseFolders);
         }
 
+        public CourseFoldersDto GetCourseFolderByIdAlongWithCourseVideos(int id)
+        {
+            CourseFolders courseFolders = _context.CourseFolders.Where(cf => cf.ID == id).Include(cf => cf.CourseVideos).FirstOrDefault();
+
+            if (courseFolders == null)
+            {
+                throw new NotFoundException("Course Folder not found");
+            }
+
+            return _mapper.Map<CourseFoldersDto>(courseFolders);
+        }
+
         public CourseFoldersDto RemoveVideoFromCourseFolder(int courseFolderId, int courseVideoId)
         {
             CourseFolders courseFolders = _context.CourseFolders.Find(courseFolderId);
