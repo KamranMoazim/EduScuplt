@@ -10,6 +10,7 @@ using System.Text;
 using Backend.Repositories.AuthRepo;
 using Backend.Repositories.CourseRepo;
 using Microsoft.EntityFrameworkCore;
+using Backend.Repositories.CourseFolderRepo;
 
 
 
@@ -31,6 +32,7 @@ builder.Services.AddDbContext<ProjectAppContext>();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICourseFolderRepository, CourseFolderRepository>();
 
 
 

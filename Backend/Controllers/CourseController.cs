@@ -1,8 +1,10 @@
 
 using System.Security.Claims;
 using Backend.Dtos.CourseDtos;
+using Backend.Dtos.CourseFoldersDtos;
 using Backend.Dtos.GenericDTOs;
 using Backend.Models;
+using Backend.Repositories.CourseFolderRepo;
 using Backend.Repositories.CourseRepo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +17,12 @@ namespace Backend.Controllers
     {
         
         public ICourseRepository CourseRepository { get; set; }
+        public ICourseFolderRepository CourseFolderRepository { get; set; }
 
-        public CourseController(ICourseRepository courseRepository)
+        public CourseController(ICourseRepository courseRepository, ICourseFolderRepository courseFolderRepository)
         {
             CourseRepository = courseRepository;
+            CourseFolderRepository = courseFolderRepository;
         }
 
         [HttpGet("courses")]
@@ -61,12 +65,12 @@ namespace Backend.Controllers
         }
 
 
-        [HttpPut("udpate-course/{}")]
+        [HttpPut("udpate-course/{courseId}")]
         [Authorize(Roles = "Instructor")]
-        public ActionResult<CreateResponseDto> UpdateCourse([FromBody] UpdateCourseInfoDto courseDto)
+        public ActionResult<CreateResponseDto> UpdateCourse(int courseId, [FromBody] UpdateCourseInfoDto courseDto)
         {
 
-            Course course = CourseRepository.GetCourseById(courseDto.ID);
+            Course course = CourseRepository.GetCourseById(courseId);
 
             if (course == null)
             {
@@ -179,6 +183,104 @@ namespace Backend.Controllers
             CourseRepository.UpdateCourse(course);
             return Ok(course);
         }
+
+
+
+
+
+
+
+
+        // Course Folders Related Routes
+
+        [HttpGet("/courses/{courseId}/course-folders")]
+        public ActionResult<CourseInfoDto> GetAllCourseFoldersOfCourse(int courseId)
+        {
+            IEnumerable<CourseFoldersDto> courseFoldersDto = CourseFolderRepository.GetAllCourseFoldersOfCourse(courseId);
+            return Ok(courseFoldersDto);
+        }
+
+        [HttpPost("/courses/{courseId}/course-folders")]
+        public ActionResult<CourseInfoDto> CreateCourseFolder(int courseId, [FromBody] CreateCourseFoldersDto courseFolder)
+        {
+            IsUserIdAvailable(out int userId);
+
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            CourseFoldersDto courseFoldersDto = CourseFolderRepository.CreateCourseFolder(courseId, courseFolder);
+            return Ok(courseFoldersDto);
+        }
+
+        [HttpPut("/courses/course-folders/{courseFolderId}")]
+        public ActionResult<CourseInfoDto> UpdateCourseFolder(int courseFolderId, [FromBody] UpdateCourseInfoDto courseFolder)
+        {
+            IsUserIdAvailable(out int userId);
+
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            courseFolder.ID = courseFolderId;
+
+            CourseFoldersDto courseFoldersDto = CourseFolderRepository.UpdateCourseFolder(courseFolder);
+            return Ok(courseFoldersDto);
+        }
+
+        [HttpDelete("/courses/course-folders/{courseFolderId}")]
+        public ActionResult<CourseInfoDto> DeleteCourseFolder(int courseFolderId)
+        {
+            IsUserIdAvailable(out int userId);
+
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            bool isDeleted = CourseFolderRepository.DeleteCourseFolderById(courseFolderId);
+            if (isDeleted)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost("/courses/course-folders/add-video/{courseFolderId}/{courseVideoId}")]
+        [Authorize(Roles = "Instructor")]
+        public ActionResult<CourseInfoDto> AddVideoToCourseFolder(int courseFolderId, int courseVideoId)
+        {
+            IsUserIdAvailable(out int userId);
+
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            CourseFoldersDto courseFoldersDto = CourseFolderRepository.AddVideoToCourseFolder(courseFolderId, courseVideoId);
+            return Ok(courseFoldersDto);
+        }
+
+        [HttpPost("/courses/course-folders/remove-video/{courseFolderId}/{courseVideoId}")]
+        [Authorize(Roles = "Instructor")]
+        public ActionResult<CourseInfoDto> RemoveVideoFromCourseFolder(int courseFolderId, int courseVideoId)
+        {
+            IsUserIdAvailable(out int userId);
+
+            if (userId == 0)
+            {
+                return Unauthorized();
+            }
+
+            CourseFoldersDto courseFoldersDto = CourseFolderRepository.RemoveVideoFromCourseFolder(courseFolderId, courseVideoId);
+            return Ok(courseFoldersDto);
+        }
+
 
 
 

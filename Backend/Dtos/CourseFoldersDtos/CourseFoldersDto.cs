@@ -10,6 +10,8 @@ namespace Backend.Dtos.CourseFoldersDtos
 
         public string FolderName { get; set; }
 
+        public int CourseVideosCount { get; set; }
+
         public List<CourseVideoDto> CourseVideos { get; set; }
     }
 }
