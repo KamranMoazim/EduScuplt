@@ -64,11 +64,6 @@ namespace Backend.Controllers
 
             IsUserIdAvailable(out int userId);
 
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
-
             courseDto.InstructorId = userId;
             CourseRepository.CreateCourse(courseDto);
 
@@ -119,11 +114,6 @@ namespace Backend.Controllers
         public ActionResult<CourseInfoDto> GetAllCoursesOfInstructor()
         {
             IsUserIdAvailable(out int userId);
-
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
             
             return Ok(CourseRepository.GetAllCoursesOfInstructor(userId));
         }
@@ -133,11 +123,6 @@ namespace Backend.Controllers
         public ActionResult<CreateResponseDto> GetAllCoursesOfInstructor(int courseId)
         {
             IsUserIdAvailable(out int userId);
-
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
 
             Course course = CourseRepository.GetCourseById(courseId);
             course.IsApproved = false;
@@ -161,13 +146,14 @@ namespace Backend.Controllers
         {
             IsUserIdAvailable(out int userId);
 
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
-
             return Ok(CourseRepository.GetAllStudentsBoughtCourses(userId));
         }
+
+
+
+
+
+
 
         [HttpGet("/courses/admin/unapproved/")]
         [Authorize(Roles = "Admin")]
@@ -175,10 +161,6 @@ namespace Backend.Controllers
         {
             IsUserIdAvailable(out int userId);
 
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
 
             return Ok(CourseRepository.GetAllCoursesForAdminApproval());
         }
@@ -189,11 +171,6 @@ namespace Backend.Controllers
         {
             IsUserIdAvailable(out int userId);
 
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
-
             Course course = CourseRepository.GetCourseById(courseId);
             course.IsApproved = true;
             course.ApprovedById = userId;
@@ -201,6 +178,9 @@ namespace Backend.Controllers
             CourseRepository.UpdateCourse(course);
             return Ok(course);
         }
+
+
+
 
 
 
@@ -223,11 +203,6 @@ namespace Backend.Controllers
         {
             IsUserIdAvailable(out int userId);
 
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
-
             CourseFoldersDto courseFoldersDto = CourseFolderRepository.CreateCourseFolder(courseId, courseFolder);
             return Ok(courseFoldersDto);
         }
@@ -236,11 +211,6 @@ namespace Backend.Controllers
         public ActionResult<CourseFoldersDto> UpdateCourseFolder(int courseFolderId, [FromBody] UpdateCourseInfoDto courseFolder)
         {
             IsUserIdAvailable(out int userId);
-
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
 
             courseFolder.ID = courseFolderId;
 
@@ -252,11 +222,6 @@ namespace Backend.Controllers
         public ActionResult<CourseFoldersDto> DeleteCourseFolder(int courseFolderId)
         {
             IsUserIdAvailable(out int userId);
-
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
 
             bool isDeleted = CourseFolderRepository.DeleteCourseFolderById(courseFolderId);
             if (isDeleted)
@@ -275,11 +240,6 @@ namespace Backend.Controllers
         {
             IsUserIdAvailable(out int userId);
 
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
-
             CourseFoldersDto courseFoldersDto = CourseFolderRepository.AddVideoToCourseFolder(courseFolderId, courseVideoId);
             return Ok(courseFoldersDto);
         }
@@ -289,11 +249,6 @@ namespace Backend.Controllers
         public ActionResult<CourseFoldersDto> RemoveVideoFromCourseFolder(int courseFolderId, int courseVideoId)
         {
             IsUserIdAvailable(out int userId);
-
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
 
             CourseFoldersDto courseFoldersDto = CourseFolderRepository.RemoveVideoFromCourseFolder(courseFolderId, courseVideoId);
             return Ok(courseFoldersDto);
@@ -316,11 +271,6 @@ namespace Backend.Controllers
         {
             IsUserIdAvailable(out int userId);
 
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
-
             CourseVideoDto courseVideoDto = CourseVideoRepository.CreateCourseVideo(courseVideo);
             return Ok(courseVideoDto);
         }
@@ -330,11 +280,6 @@ namespace Backend.Controllers
         public ActionResult<CourseVideoDto> UpdateCourseVideo(int courseVideoId, [FromBody] UpdateCourseVideoDto courseVideo)
         {
             IsUserIdAvailable(out int userId);
-
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
 
             courseVideo.ID = courseVideoId;
 
@@ -347,11 +292,6 @@ namespace Backend.Controllers
         public ActionResult<bool> DeleteCourseVideo(int courseVideoId)
         {
             IsUserIdAvailable(out int userId);
-
-            if (userId == 0)
-            {
-                return Unauthorized();
-            }
 
             bool isDeleted = CourseVideoRepository.DeleteCourseVideoById(courseVideoId);
             if (isDeleted)
@@ -397,8 +337,7 @@ namespace Backend.Controllers
             }
             else
             {
-                userId = 0;
-                return false;
+                throw new Exception("User Id not found in token");
             }
         }
 

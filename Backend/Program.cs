@@ -12,6 +12,7 @@ using Backend.Repositories.CourseRepo;
 using Microsoft.EntityFrameworkCore;
 using Backend.Repositories.CourseFolderRepo;
 using Backend.Repositories.TagRepo;
+using Backend.Repositories.CommentRepo;
 
 
 
@@ -35,6 +36,7 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseFolderRepository, CourseFolderRepository>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 
 

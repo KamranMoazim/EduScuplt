@@ -1,4 +1,6 @@
 
+using Backend.Dtos.VideoCommentsDtos;
+using Backend.Repositories.CommentRepo;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -7,16 +9,27 @@ namespace Backend.Controllers
     [Route("api/[controller]")]
     public class CommentController : ControllerBase
     {
-        [HttpGet("/{videoId}/comments")]
-        public IActionResult GetComments(int videoId)
+        
+        public ICommentRepository CommentRepository { get; set; }
+
+        public CommentController(ICommentRepository commentRepository)
         {
-            return Ok($"CommentController {videoId}");
+            CommentRepository = commentRepository;
         }
 
-        [HttpPost("/{videoId}/comments")]
-        public IActionResult PostComment(int videoId, [FromBody] string comment)
+        [HttpGet("/{videoId}")]
+        public IActionResult GetComments(int videoId)
         {
-            return Ok($"CommentController {videoId}");
+
+            return CommentRepository.ReadComments(videoId).Count > 0 ? Ok(CommentRepository.ReadComments(videoId)) : NotFound("No comments found");
+        }
+
+        [HttpPost("/{videoId}")]
+        public IActionResult PostComment(int videoId, [FromBody] CreateVideoCommentsDto comment)
+        {
+            comment.CourseVideoId = videoId;
+
+            return Ok(CommentRepository.CreateComment(comment));
         }
     }
 }
