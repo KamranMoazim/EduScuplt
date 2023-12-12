@@ -15,7 +15,6 @@ namespace Backend.Models
         public DateTime CommentDate { get; set; }
         public bool IsPublic { get; set; } = false;
 
-
         public CourseVideo CourseVideo { get; set; }
         public int CourseVideoId { get; set; }
 
