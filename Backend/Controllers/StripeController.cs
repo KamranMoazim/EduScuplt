@@ -38,16 +38,18 @@ namespace Backend.Controllers
         // }
 
         [HttpPost("payment/add")]
-        public string CreatePayment()
+        public string CreatePayment([FromBody] AddStripePayment payment,CancellationToken ct)
         {
-            // Replace these values with your actual success and cancel URLs
+
             string successUrl = "https://google.com/";
             string cancelUrl = "https://google.com/";
 
-            decimal paymentAmount = 10.00m; // Replace with your desired payment amount
-            string currency = "usd"; // Replace with your desired currency code
+            var amount = 45;
+            var currency = "usd";
 
-            var checkoutUrl = StripeRepository.CreateCheckoutSession(paymentAmount, currency, successUrl, cancelUrl);
+            string courseName = "Test Course";
+
+            string checkoutUrl = StripeRepository.CreateCheckoutUrl(amount, currency, courseName, payment.CustomerId, successUrl, cancelUrl);
 
             return checkoutUrl;
         }

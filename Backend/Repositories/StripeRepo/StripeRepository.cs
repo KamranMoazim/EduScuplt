@@ -30,71 +30,21 @@ namespace Backend.Repositories.StripeRepo
 
         public StripeCustomer AddStripeCustomer(AddStripeCustomer customer, CancellationToken ct)
         {
-            // // Set Stripe Token options based on customer data
-            // TokenCreateOptions tokenOptions = new TokenCreateOptions
-            // {
-            //     Card = new TokenCardOptions
-            //     {
-            //         Name = customer.Name,
-            //         Number = customer.CreditCard.CardNumber,
-            //         ExpYear = customer.CreditCard.ExpirationYear,
-            //         ExpMonth = customer.CreditCard.ExpirationMonth,
-            //         Cvc = customer.CreditCard.Cvc
-            //     }
-            // };
-
-            // // Create new Stripe Token
-            // Token stripeToken = _tokenService.Create(tokenOptions, null);
-
             // Set Customer options
             CustomerCreateOptions customerOptions = new CustomerCreateOptions
             {
                 Name = customer.Name,
-                Email = customer.Email,
-                // Source = stripeToken.Id
+                Email = customer.Email
             };
-
-            CardCreateNestedOptions nestedCard = new CardCreateNestedOptions();
-            // nestedCard.ExpMonth = 10;
-            // nestedCard.ExpYear = 2021;
-            // nestedCard.Number = "4242424242424242";
-            // nestedCard.Cvc = "123";
-
-            nestedCard.Name = customer.Name;
-            nestedCard.ExpMonth = Convert.ToInt32(customer.CreditCard.ExpirationMonth);
-            nestedCard.ExpYear = Convert.ToInt32(customer.CreditCard.ExpirationYear);
-            nestedCard.Number = customer.CreditCard.CardNumber;
-            nestedCard.Cvc = customer.CreditCard.Cvc;
-
-            customerOptions.Source = nestedCard;
-
-
 
             // Create customer at Stripe
             Customer createdCustomer = _customerService.Create(customerOptions, null);
 
-            // Set Stripe Token options based on customer data
-            // var cardTokenOptions = new CardCreateOptions
-            // {
-            //     Source = "tok_visa_debit",
-            // };
-
-            
-
-            // Create new Card Token
-            // var cardToken = _cardService.Create(createdCustomer.Id.ToString(), cardTokenOptions, null);
-
-            // Return the created customer at Stripe (good for testing, to see if the request gone through)
-            // return new StripeCustomer(stripeCustomer.Name, stripeCustomer.Email, stripeCustomer.Id);
             return new StripeCustomer(createdCustomer.Name, createdCustomer.Email, createdCustomer.Id);
-
-
-            // Return the created customer at stripe
-            // return new StripeCustomer(createdCustomer.Name, createdCustomer.Email, createdCustomer.Id);
         }
 
 
-        public string CreateCheckoutSession(decimal amount, string currency, string successUrl, string cancelUrl)
+        public string CreateCheckoutUrl(decimal amount, string currency, string courseName, string customerId, string successUrl, string cancelUrl)
         {
             var options = new SessionCreateOptions
             {
@@ -111,7 +61,7 @@ namespace Backend.Repositories.StripeRepo
                             Currency = currency,
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
-                                Name = "Your Product Name",
+                                Name = courseName,
                             },
                             UnitAmount = (long)(amount * 100), // Amount must be in cents
                         },
@@ -121,8 +71,7 @@ namespace Backend.Repositories.StripeRepo
                 Mode = "payment",
                 SuccessUrl = successUrl,
                 CancelUrl = cancelUrl,
-                
-
+                Customer = customerId,
             };
 
             var service = new SessionService();
