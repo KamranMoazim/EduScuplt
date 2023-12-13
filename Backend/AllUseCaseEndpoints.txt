@@ -11,3 +11,7 @@ CourseController
 domain.com/api/Course/courses                    --- to get all courses
 domain.com/api/Course/courses/{id}               --- to get particular course
 domain.com/api/Course/create-course              --- to post new course
+
+
+public_stripe_key = pk_test_51IEw0JBssRAZJMFRaPoSEUByk30j59ss8eXI9V8jbrthjnRBF7ZnkD04WaGwZDJGgkncKOIHe3EE0DgWscF2qHqm00TVLAR71K
+private_stripe_key = sk_test_51IEw0JBssRAZJMFRft7YUEnbiCnbcduo5dEswLICerDOhXdyL4b1IRnXEJdMLuHfbeUwoCVvGHgnCb3z8qbqqdSD007337Ix0a

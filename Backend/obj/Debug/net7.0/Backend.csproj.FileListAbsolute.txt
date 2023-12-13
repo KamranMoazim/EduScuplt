@@ -83,3 +83,15 @@
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 /home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/dotnet-ef.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Microsoft.Win32.SystemEvents.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/Stripe.net.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/System.Configuration.ConfigurationManager.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/System.Drawing.Common.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/System.Security.Cryptography.ProtectedData.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/System.Security.Permissions.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/System.Windows.Extensions.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/runtimes/unix/lib/net6.0/System.Drawing.Common.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/runtimes/win/lib/net6.0/System.Drawing.Common.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/runtimes/win/lib/net6.0/System.Security.Cryptography.ProtectedData.dll
+/home/kamranmoazim/Desktop/YPS/EduScuplt/Backend/bin/Debug/net7.0/runtimes/win/lib/net6.0/System.Windows.Extensions.dll

@@ -15,6 +15,8 @@ using Backend.Repositories.TagRepo;
 using Backend.Repositories.CommentRepo;
 using Backend.Repositories.InterestRepo;
 using Backend.Repositories.InstructorRepo;
+using Stripe;
+using Backend.Repositories.StripeRepo;
 
 
 
@@ -34,6 +36,10 @@ builder.Services.AddDbContext<ProjectAppContext>();
 //     .AddEntityFrameworkStores<ProjectAppContext>()
 //     .AddDefaultTokenProviders();
 
+// StripeConfiguration.ApiKey = "sk_test_51IEw0JBssRAZJMFRFd26wS5Izc7r53lYpV9cgcU0UcM2Bbb799vJY58JbcVMhM9TZqzexlaV1gvArcWLtW9oeR9x00qMpjnR3L";
+StripeConfiguration.ApiKey = "sk_test_51IEw0JBssRAZJMFRft7YUEnbiCnbcduo5dEswLICerDOhXdyL4b1IRnXEJdMLuHfbeUwoCVvGHgnCb3z8qbqqdSD007337Ix0a";
+
+
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICourseFolderRepository, CourseFolderRepository>();
@@ -43,6 +49,12 @@ builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 builder.Services.AddScoped<IInstructorRepository, InstructorRepository>();
 
 
+// StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
+builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<ChargeService>();
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<CardService>();
+builder.Services.AddScoped<IStripeRepository, StripeRepository>();
 
 
 
@@ -50,6 +62,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// builder.Services.AddStripeInfrastructure(builder.Configuration);
+
 
 // for rate limiting
 builder.Services.AddMemoryCache();
