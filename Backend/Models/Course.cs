@@ -1,11 +1,12 @@
 
 using System.ComponentModel.DataAnnotations;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class Course
+    public class Course : SoftDeletable
     {
-        public int ID { get; set; }
+        // public int ID { get; set; }
 
         [Required(ErrorMessage = "Course Title is required.")]
         [StringLength(100, ErrorMessage = "Course Title must be at most 100 characters.")]
@@ -26,7 +27,7 @@ namespace Backend.Models
         // Admin Related Properties
         public bool IsApproved { get; set; } = false;
         public Admin? ApprovedBy { get; set; }
-        public int? ApprovedById { get; set; }
+        public long? ApprovedById { get; set; }
 
 
         // Student Related Properties
@@ -35,7 +36,7 @@ namespace Backend.Models
 
         // Instructor Related Properties
         public Instructor Instructor { get; set; }
-        public int InstructorId { get; set; }
+        public long InstructorId { get; set; }
         public List<CourseDiscount> CourseDiscounts { get; set; }
 
 

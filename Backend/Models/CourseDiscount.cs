@@ -1,12 +1,13 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class CourseDiscount
+    public class CourseDiscount : SoftDeletable
     {
-        public int ID { get; set; }
+        // public int ID { get; set; }
 
         [Required(ErrorMessage = "Discount Code is required.")]
         [StringLength(15, ErrorMessage = "Discount Code must be at most 15 characters.")]
@@ -17,10 +18,10 @@ namespace Backend.Models
 
 
         public Course Course { get; set; }
-        public int CourseId { get; set; }
+        public long CourseId { get; set; }
 
         public Instructor Instructor { get; set; }
-        public int InstructorId { get; set; }
+        public long InstructorId { get; set; }
 
     }
 }

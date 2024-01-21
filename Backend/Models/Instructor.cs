@@ -2,18 +2,19 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class Instructor
+    public class Instructor : SoftDeletable
     {
         // public int ID { get; set; }
 
-        [Key]
-        public int Id { get; set; }
+        // [Key]
+        // public int Id { get; set; }
 
         // [ForeignKey("UserId")]  // Specify the name of the foreign key property
-        public int UserId { get; set; }
+        public long UserId { get; set; }
         public User User { get; set; }
 
 
@@ -32,7 +33,7 @@ namespace Backend.Models
         // Admin Related Properties
         public bool IsApproved { get; set; } = false;
         public Admin ApprovedBy { get; set; }
-        public int? ApprovedById { get; set; }
+        public long? ApprovedById { get; set; }
 
 
 

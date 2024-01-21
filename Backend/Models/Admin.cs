@@ -1,16 +1,18 @@
 
 
+using Backend.Models.HelpingModels;
+
 namespace Backend.Models
 {
-    public class Admin
+    public class Admin : SoftDeletable
     {
         // public int Id { get; set; }
 
         // [Key]
-        public int Id { get; set; }
+        // public int Id { get; set; }
 
         // [ForeignKey("UserId")]  // Specify the name of the foreign key property
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
         public User User { get; set; }
 

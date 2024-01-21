@@ -4,7 +4,7 @@ using Backend.Dtos.UserDtos;
 using AutoMapper;
 using Backend.Exceptions;
 using Backend.Utils;
-
+using Backend.Interfaces;
 
 namespace Backend.Repositories.AuthRepo
 {
@@ -92,7 +92,7 @@ namespace Backend.Repositories.AuthRepo
             {
                 Instructor instructor = new Instructor
                 {
-                    Id = user.ID,
+                    ID = user.ID,
                     AccountNo = "",
                     AccountDetails = "",
                     User = user
@@ -104,7 +104,7 @@ namespace Backend.Repositories.AuthRepo
             {
                 Student student = new Student
                 {
-                    Id = user.ID,
+                    ID = user.ID,
                     User = user
                 };
 
@@ -114,7 +114,7 @@ namespace Backend.Repositories.AuthRepo
             {
                 Admin admin = new Admin
                 {
-                    Id = user.ID,
+                    ID = user.ID,
                     User = user
                 };
 
@@ -155,6 +155,50 @@ namespace Backend.Repositories.AuthRepo
             }
 
             return user;
+        }
+
+        public User Save(User dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User Update(User dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User Get(long id)
+        {
+            // throw new NotImplementedException();
+            User user = _context.Users.FirstOrDefault(u => u.ID == id);
+
+            if (user == null)
+            {
+                throw new NotFoundException("User not found");
+            }
+
+            return user;
+        }
+
+        public IEnumerable<User> Get()
+        {
+            // throw new NotImplementedException();
+            return _mapper.Map<List<User>>(_context.Users.ToList());
+        }
+
+        public IEnumerable<User> Search(Predicate<User> criteria)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PagedList<User> Page(Predicate<User> criteria, PagingInfo pagingInfo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

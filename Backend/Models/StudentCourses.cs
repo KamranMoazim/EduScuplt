@@ -1,12 +1,13 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class StudentCourses
+    public class StudentCourses : SoftDeletable
     {
-        public int ID { get; set; }
+        // public int ID { get; set; }
 
         public DateTime CourseStartDate { get; set; }
         public DateTime CourseCompleteDate { get; set; }
@@ -29,17 +30,17 @@ namespace Backend.Models
 
         // Payment Related Properties
         public StudentPayment StudentPayment { get; set; }
-        public int StudentPaymentId { get; set; }
+        public long StudentPaymentId { get; set; }
 
 
 
 
 
         public Student Student { get; set; }
-        public int StudentId { get; set; }
+        public long StudentId { get; set; }
 
 
         public Course Course { get; set; }
-        public int CourseId { get; set; }
+        public long CourseId { get; set; }
     }
 }

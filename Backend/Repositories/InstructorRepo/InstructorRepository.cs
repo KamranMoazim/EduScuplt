@@ -18,7 +18,7 @@ namespace Backend.Repositories.InstructorRepo
 
         public Instructor GetInstructorById(int id)
         {
-            return _context.Instructors.FirstOrDefault(i => i.Id == id);
+            return _context.Instructors.FirstOrDefault(i => i.ID == id);
         }
 
         public Instructor GetInstructorByUserId(int userId)

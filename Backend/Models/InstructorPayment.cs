@@ -1,12 +1,13 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class InstructorPayment
+    public class InstructorPayment : SoftDeletable
     {
-        public int ID { get; set; }
+        // public int ID { get; set; }
 
         [Required(ErrorMessage = "Stripe Payment ID is required.")]
         public string StripePaymentID { get; set; }
@@ -17,6 +18,6 @@ namespace Backend.Models
 
 
         public Instructor Instructor { get; set; }
-        public int InstructorId { get; set; }
+        public long InstructorId { get; set; }
     }
 }

@@ -2,12 +2,13 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class Notification
+    public class Notification : SoftDeletable
     {
-        public int ID { get; set; }
+        // public int ID { get; set; }
         public DateTime TimeStamp { get; set; }
         public bool IsRead { get; set; } = false;
 
@@ -18,7 +19,7 @@ namespace Backend.Models
 
         // for whom the notification is
         public User User { get; set; }
-        public int UserId { get; set; }
+        public long UserId { get; set; }
 
 
 
@@ -43,7 +44,7 @@ namespace Backend.Models
             }
         }
         public string NotificationType { get; set; } // e.g., "CommentReply", "Marketing"
-        public int? RelatedEntityId { get; set; } // ID of the related entity (e.g., CommentId, MarketingId)
+        public long? RelatedEntityId { get; set; } // ID of the related entity (e.g., CommentId, MarketingId)
 
 
         [ForeignKey(nameof(RelatedEntityId))]

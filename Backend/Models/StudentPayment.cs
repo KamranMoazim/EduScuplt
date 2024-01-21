@@ -1,11 +1,12 @@
 
 using System.ComponentModel.DataAnnotations;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class StudentPayment
+    public class StudentPayment : SoftDeletable
     {
-        public int ID { get; set; }
+        // public int ID { get; set; }
 
 
         [Required(ErrorMessage = "Stripe Payment ID is required.")]
@@ -20,7 +21,7 @@ namespace Backend.Models
 
 
         public CourseDiscount CourseDiscount { get; set; }
-        public int? CourseDiscountId { get; set; }
+        public long? CourseDiscountId { get; set; }
 
 
         // [ForeignKey(nameof(StudentCourses))]
@@ -31,7 +32,7 @@ namespace Backend.Models
 
 
         public Course Course { get; set; }
-        public int CourseId { get; set; }
+        public long CourseId { get; set; }
 
     }
 }

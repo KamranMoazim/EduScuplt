@@ -1,20 +1,18 @@
-using System;
-using System.Collections.Generic;
+
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class CourseMarketing
+    public class CourseMarketing : SoftDeletable
     {
-        public int ID { get; set; }
+        // public int ID { get; set; }
 
         [Required(ErrorMessage = "Course Description is required.")]
         [StringLength(250, ErrorMessage = "Course Description must be at most 250 characters.")]
         public string CourseDescription { get; set; }
 
         public Admin Admin { get; set; }
-        public int AdminId { get; set; }
+        public long AdminId { get; set; }
     }
 }

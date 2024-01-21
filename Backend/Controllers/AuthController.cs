@@ -25,7 +25,7 @@ namespace Backend.Controllers
         [AllowAnonymous]
         public ActionResult<IEnumerable<UserDto>> GetAllUsers()
         {
-            return Ok(AuthRepository.GetAll());
+            return Ok(AuthRepository.Get());
         }
 
 
@@ -33,6 +33,19 @@ namespace Backend.Controllers
         [AllowAnonymous]
         public ActionResult<CreateResponseDto> Register([FromBody] CreateUserDto userDto)
         {
+            
+            if (userDto.UserType == ProjectEnums.UserType.Student.ToString())
+            {
+                
+            }
+            else if (userDto.UserType == ProjectEnums.UserType.Instructor.ToString())
+            {
+                
+            }
+            else
+            {
+                return BadRequest("Invalid UserType value.");
+            }
 
             User user = AuthRepository.Register(userDto);
 
@@ -89,7 +102,7 @@ namespace Backend.Controllers
                 if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
                 {
                     // Fetch the user from your repository or database based on the user ID
-                    var user = AuthRepository.GetUser(userId);
+                    var user = AuthRepository.Get(userId);
 
                     // Create the response DTO
                     var responseUserDto = new UserDto

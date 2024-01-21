@@ -1,12 +1,13 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using Backend.Models.HelpingModels;
 
 namespace Backend.Models
 {
-    public class CourseVideo
+    public class CourseVideo : SoftDeletable
     {
-        public int ID { get; set; }
+        // public int ID { get; set; }
 
         [Required(ErrorMessage = "Video Title is required.")]
         [StringLength(250, ErrorMessage = "Video Title must be at most 250 characters.")]
@@ -20,12 +21,12 @@ namespace Backend.Models
 
 
         public Course Course { get; set; }
-        public int CourseId { get; set; }
+        public long CourseId { get; set; }
 
 
 
         public CourseFolders CourseFolders { get; set; }
-        public int? CourseFoldersId { get; set; }
+        public long? CourseFoldersId { get; set; }
 
 
         // public List<StudentCourseVideoLikes> StudentCourseVideoLikes { get; set; }
