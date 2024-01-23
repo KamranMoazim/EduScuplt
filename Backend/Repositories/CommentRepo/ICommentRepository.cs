@@ -8,6 +8,6 @@ namespace Backend.Repositories.CommentRepo
     public interface ICommentRepository
     {
         CreateResponseDto CreateComment(CreateVideoCommentsDto createVideoCommentsDto);
-        List<VideoCommentsDto> ReadComments(int videoId);
+        List<VideoCommentsDto> ReadComments(long videoId);
     }
 }

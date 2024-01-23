@@ -6,12 +6,12 @@ namespace Backend.Repositories.CourseFolderRepo
 {
     public interface ICourseFolderRepository
     {
-        CourseFoldersDto AddVideoToCourseFolder(int courseFolderId, int courseVideoId);
-        CourseFoldersDto RemoveVideoFromCourseFolder(int courseFolderId, int courseVideoId);
-        CourseFoldersDto CreateCourseFolder(int courseId, CreateCourseFoldersDto courseFolder);
+        CourseFoldersDto AddVideoToCourseFolder(long courseFolderId, long courseVideoId);
+        CourseFoldersDto RemoveVideoFromCourseFolder(long courseFolderId, long courseVideoId);
+        CourseFoldersDto CreateCourseFolder(long courseId, CreateCourseFoldersDto courseFolder);
         CourseFoldersDto UpdateCourseFolder(UpdateCourseInfoDto courseFolder);
-        bool DeleteCourseFolderById(int id);
-        IEnumerable<CourseFoldersDto> GetAllCourseFoldersOfCourse(int courseId);
-        CourseFoldersDto GetCourseFolderByIdAlongWithCourseVideos(int id);
+        bool DeleteCourseFolderById(long id);
+        IEnumerable<CourseFoldersDto> GetAllCourseFoldersOfCourse(long courseId);
+        CourseFoldersDto GetCourseFolderByIdAlongWithCourseVideos(long id);
     }
 }

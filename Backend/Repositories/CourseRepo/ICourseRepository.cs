@@ -10,9 +10,13 @@ namespace Backend.Repositories.CourseRepo
         Course UpdateCourse(Course course);
         IEnumerable<Course> AllCourses();
         IEnumerable<CourseInfoDto> GetCoursesByTagName(string tagName);
-        Course GetCourseById(int id);
-        IEnumerable<Course> GetAllCoursesOfInstructor(int instructorId);
-        IEnumerable<Course> GetAllStudentsBoughtCourses(int studentId);
+        Course GetCourseById(long id);
+        bool RateCourse(long courseId, long studentId, int rating);
+        IEnumerable<Course> GetAllCoursesOfInstructor(long instructorId);
+        IEnumerable<Course> GetAllStudentsBoughtCourses(long studentId);
         IEnumerable<Course> GetAllCoursesForAdminApproval();
+
+        // StudentCourse
+        StudentCourses BuyCourse(long studentId, long courseId);
     }
 }

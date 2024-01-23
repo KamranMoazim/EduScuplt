@@ -30,7 +30,7 @@ namespace Backend.Repositories.TagRepo
             return _mapper.Map<CreateTagDto>(tag);
         }
 
-        public bool DeleteTagById(int id)
+        public bool DeleteTagById(long id)
         {
 
             Tags? tag = _context.Tags.Find(id);
@@ -51,7 +51,12 @@ namespace Backend.Repositories.TagRepo
             return _mapper.Map<IEnumerable<TagDto>>(_context.Tags);
         }
 
-        public TagDto GetTagById(int id)
+        public IEnumerable<TagDto> GetCourseTags(long courseId)
+        {
+            return _mapper.Map<IEnumerable<TagDto>>(_context.Tags);
+        }
+
+        public TagDto GetTagById(long id)
         {
             Tags? tag = _context.Tags.Find(id);
 

@@ -16,7 +16,7 @@ namespace Backend.Repositories.InterestRepo
             _mapper = map;
         }
 
-        public Interests GetInterestById(int id)
+        public Interests GetInterestById(long id)
         {
             return _context.Interests.FirstOrDefault(i => i.ID == id);
         }
@@ -47,7 +47,7 @@ namespace Backend.Repositories.InterestRepo
         }
 
 
-        public List<Interests> GetStudentsInterests(int studentId)
+        public List<Interests> GetStudentsInterests(long studentId)
         {
             List<StudentInterests> studentInterests = _context.StudentInterests.Where(i => i.StudentId == studentId).ToList();
             List<Interests> interests = new List<Interests>();
@@ -59,7 +59,7 @@ namespace Backend.Repositories.InterestRepo
         }
 
         // updated student interests
-        public List<Interests> UpdateStudentInterests(int studentId, List<Interests> interests)
+        public List<Interests> UpdateStudentInterests(long studentId, List<Interests> interests)
         {
             List<StudentInterests> studentInterests = _context.StudentInterests.Where(i => i.StudentId == studentId).ToList();
             foreach (var studentInterest in studentInterests)

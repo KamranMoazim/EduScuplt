@@ -16,12 +16,12 @@ namespace Backend.Repositories.InstructorRepo
             _mapper = map;
         }
 
-        public Instructor GetInstructorById(int id)
+        public Instructor GetInstructorById(long id)
         {
             return _context.Instructors.FirstOrDefault(i => i.ID == id);
         }
 
-        public Instructor GetInstructorByUserId(int userId)
+        public Instructor GetInstructorByUserId(long userId)
         {
             return _context.Instructors.FirstOrDefault(i => i.UserId == userId);
         }

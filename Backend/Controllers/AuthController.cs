@@ -76,7 +76,8 @@ namespace Backend.Controllers
                     Id = user.ID,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Email = user.Email
+                    Email = user.Email,
+                    Role = user.UserType
                 }
             };
 
@@ -110,7 +111,8 @@ namespace Backend.Controllers
                         Id = user.ID,
                         FirstName = user.FirstName,
                         LastName = user.LastName,
-                        Email = user.Email
+                        Email = user.Email,
+                        Role = user.UserType
                     };
 
                     return Ok(responseUserDto);
@@ -140,6 +142,7 @@ namespace Backend.Controllers
             {
                 // Check if the email exists in your system
                 var user = AuthRepository.GetUserByEmail(forgotPasswordDto.Email);
+                AuthRepository.ResetUserPassword(forgotPasswordDto.Email);
 
                 if (user == null)
                 {
@@ -151,8 +154,11 @@ namespace Backend.Controllers
                     });
                 }
 
+                // Console.WriteLine("==================================================================");
+
                 // Generate a password reset token
-                string resetToken = AuthUtils.GeneratePasswordResetToken(user);
+                // string resetToken = AuthUtils.GeneratePasswordResetToken(user);
+                // you should not it here
 
                 // Here, you might want to send an email to the user with the reset link or token
                 // Include the reset token in the reset link or use it to validate the reset request
@@ -175,7 +181,43 @@ namespace Backend.Controllers
         }
 
 
+        // [HttpPost("reset-password")]
+        // [AllowAnonymous]
+        // public ActionResult<ResetPasswordResponseDto> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+        // {
+        //     try
+        //     {
+        //         // Check if the email exists in your system
+        //         var user = AuthRepository.GetUserByEmail(resetPasswordDto.Email);
 
+        //         if (user == null)
+        //         {
+        //             // Return a generic response to avoid leaking information about registered emails
+        //             return Ok(new ResetPasswordResponseDto
+        //             {
+        //                 Status = "Success",
+        //                 Message = "If the email exists in our system, we have sent a password reset link to your email."
+        //             });
+        //         }
+
+        //         // Reset the user password
+        //         AuthUtils.ResetPassword(user, resetPasswordDto.Token, resetPasswordDto.Password);
+
+        //         // Here, you might want to send an email to the user confirming that their password was changed
+
+        //         return Ok(new ResetPasswordResponseDto
+        //         {
+        //             Status = "Success",
+        //             Message = "Your password has been reset successfully."
+        //         });
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         // Log the exception or handle it accordingly
+        //         Console.WriteLine($"An error occurred while processing the reset password request: {ex.Message}");
+        //         return StatusCode(500, "Internal Server Error");
+        //     }
+        // }
 
 
 

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Dtos.StripeDtos;
+using Backend.Models;
+using Backend.Repositories.CourseRepo;
 using Backend.Repositories.StripeRepo;
+using Backend.Repositories.StudentRepo;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 
@@ -14,10 +17,19 @@ namespace Backend.Controllers
     public class StripeController : ControllerBase
     {
         private readonly IStripeRepository StripeRepository;
+        public ICourseRepository CourseRepository { get; set; }
+        public IStudentRepository StudentRepository { get; set; }
 
-        public StripeController(IStripeRepository stripeService)
+
+        public StripeController(
+            IStripeRepository stripeService,
+            ICourseRepository courseRepository,
+            IStudentRepository studentRepository
+            )
         {
             StripeRepository = stripeService;
+            CourseRepository = courseRepository;
+            StudentRepository = studentRepository;
         }
 
 
@@ -38,20 +50,54 @@ namespace Backend.Controllers
         // }
 
         [HttpPost("payment/add")]
-        public string CreatePayment([FromBody] AddStripePayment payment,CancellationToken ct)
+        public string CreatePayment([FromBody] AddStripePayment payment)
         {
 
-            string successUrl = "https://google.com/";
-            string cancelUrl = "https://google.com/";
+            long courseId = Convert.ToInt64(payment.courseId);
+            long studentId = Convert.ToInt64(payment.studentId);
 
-            var amount = 45;
+            Course course = CourseRepository.GetCourseById(courseId);
+
+            var amount = course.Price * 100;
             var currency = "usd";
+            string courseName = course.Title;
 
-            string courseName = "Test Course";
 
-            string checkoutUrl = StripeRepository.CreateCheckoutUrl(amount, currency, courseName, payment.CustomerId, successUrl, cancelUrl);
+            StudentPayment studentPayment = new StudentPayment
+            {
+                StripePaymentID = "TS" + DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                ActualAmount = amount,
+                IsDiscounted = false,
+                DiscountedAmount = 0.0,
+                PaidAmount = 0.0,
+                PayingDate = DateTime.Now,
+                IsPaid = false,
+                CourseId = courseId
+            };
+            StudentRepository.AddStudentPayment(studentPayment);
+            CourseRepository.BuyCourse(studentId, courseId);
+
+
+            string successUrl = "http://localhost:3000/payment/success/"+studentPayment.StripePaymentID;
+            string cancelUrl = "http://localhost:3000/payment/cancel/"+studentPayment.StripePaymentID;
+
+            string checkoutUrl = StripeRepository.CreateCheckoutUrl(Convert.ToDecimal(amount), currency, courseName, payment.studentId, successUrl, cancelUrl);
 
             return checkoutUrl;
+        }
+
+        [HttpPost("payment/success/{stringPaymentId}")]
+        public ActionResult<string> ConfirmPayment(string stringPaymentId)
+        {
+            StudentRepository.MarkStudentPaymentAsPaid(stringPaymentId);
+
+            return StatusCode(StatusCodes.Status200OK, "Payment confirmed");
+        }
+
+        [HttpPost("payment/cancel/{stringPaymentId}")]
+        public ActionResult<string> FailedPayment(string stringPaymentId)
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, "Payment failed");
         }
     }
 }

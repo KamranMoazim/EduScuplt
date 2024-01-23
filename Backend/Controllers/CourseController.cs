@@ -4,10 +4,12 @@ using Backend.Dtos.CourseDtos;
 using Backend.Dtos.CourseFoldersDtos;
 using Backend.Dtos.CourseVideoDtos;
 using Backend.Dtos.GenericDTOs;
+using Backend.Dtos.InstructorDtos;
 using Backend.Models;
 using Backend.Repositories.CourseFolderRepo;
 using Backend.Repositories.CourseRepo;
 using Backend.Repositories.CourseVideoRepo;
+using Backend.Repositories.InstructorRepo;
 using Backend.Repositories.TagRepo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,18 +25,21 @@ namespace Backend.Controllers
         public ICourseFolderRepository CourseFolderRepository { get; set; }
         public ITagRepository TagRepository { get; set; }
         public ICourseVideoRepository CourseVideoRepository { get; set; }
+        public IInstructorRepository InstructorRepository { get; set; }
 
         public CourseController(
             ICourseRepository courseRepository, 
             ICourseFolderRepository courseFolderRepository, 
-            TagRepository tagRepository,
-            ICourseVideoRepository courseVideoRepository
+            ITagRepository tagRepository,
+            ICourseVideoRepository courseVideoRepository,
+            IInstructorRepository instructorRepository
             )
         {
             CourseRepository = courseRepository;
             CourseFolderRepository = courseFolderRepository;
             TagRepository = tagRepository;
             CourseVideoRepository = courseVideoRepository;
+            InstructorRepository = instructorRepository;
         }
 
         [HttpGet("courses")]
@@ -54,7 +59,28 @@ namespace Backend.Controllers
         [HttpGet("/courses/{id}")]
         public ActionResult<CourseInfoDto> GetSingleCourse(int id)
         {
-            return Ok(CourseRepository.GetCourseById(id));
+            var course = CourseRepository.GetCourseById(id);
+            var instructor = InstructorRepository.GetInstructorById(course.InstructorId);
+
+            var courseInfoDto = new CourseInfoDto 
+            {
+                ID = course.ID,
+                Title = course.Title,
+                Description = course.Description,
+                Price = course.Price,
+                ThumbnailURL = course.ThumbnailURL,
+                ReleaseDate = course.ReleaseDate,
+                Instructor = new InstructorDto 
+                {
+                    AccountNo = instructor.AccountNo,
+                    AccountDetails = instructor.AccountDetails,
+                },
+                Tags = TagRepository.GetCourseTags(course.ID).ToList(),
+                CourseFolders = CourseFolderRepository.GetAllCourseFoldersOfCourse(course.ID).ToList()
+            };
+
+
+            return Ok(courseInfoDto);
         }
 
         [HttpPost("create-course")]
@@ -107,6 +133,23 @@ namespace Backend.Controllers
             return Ok(createResponseDto);
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         [HttpGet("/courses/instructor-courses/")]

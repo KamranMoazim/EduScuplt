@@ -8,7 +8,7 @@ namespace Backend.Repositories.CourseVideoRepo
     {
         CourseVideoDto CreateCourseVideo(CreateCourseVideoDto courseVideo);
         CourseVideoDto UpdateCourseVideo(UpdateCourseVideoDto courseVideo);
-        bool DeleteCourseVideoById(int id);
-        CourseVideoDto GetCourseVideoById(int id);
+        bool DeleteCourseVideoById(long id);
+        CourseVideoDto GetCourseVideoById(long id);
     }
 }

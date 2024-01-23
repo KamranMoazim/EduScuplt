@@ -29,7 +29,7 @@ namespace Backend.Repositories.CourseVideoRepo
         }
 
 
-        public bool DeleteCourseVideoById(int id)
+        public bool DeleteCourseVideoById(long id)
         {
 
             CourseVideo? courseVideo = _context.CourseVideos.Find(id);
@@ -56,7 +56,7 @@ namespace Backend.Repositories.CourseVideoRepo
             return true;
         }
 
-        public CourseVideoDto GetCourseVideoById(int id)
+        public CourseVideoDto GetCourseVideoById(long id)
         {
 
             CourseVideo? courseVideo = _context.CourseVideos.Find(id);

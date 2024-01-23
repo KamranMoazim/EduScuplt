@@ -21,7 +21,7 @@ namespace Backend.Repositories.CourseRepo
 
         public IEnumerable<Course> AllCourses()
         {
-            return _context.Courses.ToList();
+            return _context.Courses.Where(c => c.IsApproved).ToList();
         }
 
         public IEnumerable<CourseInfoDto> GetCoursesByTagName(string tagName)
@@ -61,7 +61,7 @@ namespace Backend.Repositories.CourseRepo
             return _context.Courses.FirstOrDefault(c => c.ID == course.ID)!;
         }
 
-        public Course GetCourseById(int id)
+        public Course GetCourseById(long id)
         {
             Course? course = _context.Courses.FirstOrDefault(c => c.ID == id);
             if (course == null)
@@ -72,13 +72,13 @@ namespace Backend.Repositories.CourseRepo
         }
 
 
-        public IEnumerable<Course> GetAllCoursesOfInstructor(int instructorId)
+        public IEnumerable<Course> GetAllCoursesOfInstructor(long instructorId)
         {
             return _context.Courses.Where(c => c.InstructorId == instructorId).ToList();
         }
 
 
-        public IEnumerable<Course> GetAllStudentsBoughtCourses(int studentId)
+        public IEnumerable<Course> GetAllStudentsBoughtCourses(long studentId)
         {
             return _context.StudentCourses.Where(sc => sc.StudentId == studentId).Select(sc => sc.Course).ToList();
         }
@@ -89,7 +89,55 @@ namespace Backend.Repositories.CourseRepo
             return _context.Courses.Where(c => c.IsApproved == false).ToList();
         }
 
-        
-        
+        public bool RateCourse(long courseId, long studentId, int rating)
+        {
+            Course? course = _context.Courses.FirstOrDefault(c => c.ID == courseId);
+            if (course == null)
+            {
+                throw new Exception("Course not found");
+            }
+
+            StudentCourses? studentCourse = _context.StudentCourses.FirstOrDefault(sc => sc.CourseId == courseId && sc.StudentId == studentId);
+            if (studentCourse == null)
+            {
+                throw new Exception("Student not found");
+            }
+
+            if (rating <= 1 || rating >= 5)
+            {
+                throw new Exception("Rating must be between 1 and 5");
+            }
+
+            studentCourse.Rating = rating;
+            _context.SaveChanges();
+            return true;
+        }
+
+        public StudentCourses BuyCourse(long studentId, long courseId)
+        {
+
+            StudentCourses? studentCourse = _context.StudentCourses.FirstOrDefault(sc => sc.CourseId == courseId && sc.StudentId == studentId);
+            if (studentCourse != null)
+            {
+                throw new Exception("Student already bought this course");
+            }
+
+            Course? course = _context.Courses.FirstOrDefault(c => c.ID == courseId);
+            if (course == null)
+            {
+                throw new Exception("Course not found");
+            }
+
+            StudentCourses newStudentCourse = new StudentCourses
+            {
+                StudentId = studentId,
+                CourseId = courseId
+            };
+
+            _context.StudentCourses.Add(newStudentCourse);
+            _context.SaveChanges();
+
+            return newStudentCourse;
+        }
     }
 }

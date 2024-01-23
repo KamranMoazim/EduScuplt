@@ -33,7 +33,7 @@ namespace Backend.Repositories.CommentRepo
             };
         }
 
-        public List<VideoCommentsDto> ReadComments(int videoId)
+        public List<VideoCommentsDto> ReadComments(long videoId)
         {
             List<VideoComments> videoComments = _context.VideoComments.Where(x => x.CourseVideoId == videoId).ToList();
 

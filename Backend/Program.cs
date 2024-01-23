@@ -17,6 +17,8 @@ using Backend.Repositories.InterestRepo;
 using Backend.Repositories.InstructorRepo;
 using Stripe;
 using Backend.Repositories.StripeRepo;
+using Backend.Repositories.StudentRepo;
+using Backend.Repositories.CourseVideoRepo;
 
 
 
@@ -47,6 +49,8 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IInterestRepository, InterestRepository>();
 builder.Services.AddScoped<IInstructorRepository, InstructorRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<ICourseVideoRepository, CourseVideoRepository>();
 
 
 // StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");

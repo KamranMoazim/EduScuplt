@@ -20,7 +20,7 @@ namespace Backend.Repositories.CourseFolderRepo
             _mapper = map;
         }
 
-        public CourseFoldersDto AddVideoToCourseFolder(int courseFolderId, int courseVideoId)
+        public CourseFoldersDto AddVideoToCourseFolder(long courseFolderId, long courseVideoId)
         {
             CourseFolders courseFolders = _context.CourseFolders.Find(courseFolderId);
 
@@ -47,7 +47,7 @@ namespace Backend.Repositories.CourseFolderRepo
             return _mapper.Map<CourseFoldersDto>(courseFolders);
         }
 
-        public CourseFoldersDto CreateCourseFolder(int courseId, CreateCourseFoldersDto courseFolder)
+        public CourseFoldersDto CreateCourseFolder(long courseId, CreateCourseFoldersDto courseFolder)
         {
 
             Course? course = _context.Courses.Find(courseId);
@@ -66,7 +66,7 @@ namespace Backend.Repositories.CourseFolderRepo
             return _mapper.Map<CourseFoldersDto>(courseFolders);
         }
 
-        public bool DeleteCourseFolderById(int id)
+        public bool DeleteCourseFolderById(long id)
         {
             CourseFolders courseFolders = _context.CourseFolders.Find(id);
 
@@ -87,14 +87,14 @@ namespace Backend.Repositories.CourseFolderRepo
             return true;
         }
 
-        public IEnumerable<CourseFoldersDto> GetAllCourseFoldersOfCourse(int courseId)
+        public IEnumerable<CourseFoldersDto> GetAllCourseFoldersOfCourse(long courseId)
         {
             IEnumerable<CourseFolders> courseFolders = _context.CourseFolders.Where(cf => cf.CourseId == courseId).Include(cf => cf.CourseVideos);
 
             return _mapper.Map<IEnumerable<CourseFoldersDto>>(courseFolders);
         }
 
-        public CourseFoldersDto GetCourseFolderByIdAlongWithCourseVideos(int id)
+        public CourseFoldersDto GetCourseFolderByIdAlongWithCourseVideos(long id)
         {
             CourseFolders courseFolders = _context.CourseFolders.Where(cf => cf.ID == id).Include(cf => cf.CourseVideos).FirstOrDefault();
 
@@ -106,7 +106,7 @@ namespace Backend.Repositories.CourseFolderRepo
             return _mapper.Map<CourseFoldersDto>(courseFolders);
         }
 
-        public CourseFoldersDto RemoveVideoFromCourseFolder(int courseFolderId, int courseVideoId)
+        public CourseFoldersDto RemoveVideoFromCourseFolder(long courseFolderId, long courseVideoId)
         {
             CourseFolders courseFolders = _context.CourseFolders.Find(courseFolderId);
 
