@@ -1,4 +1,6 @@
 
+using Backend.Services;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +14,8 @@ namespace Backend.Controllers
         [HttpGet]
         public ActionResult<string> Get()
         {
+            var jobID = BackgroundJob.Enqueue<IBackendJobService>(x => x.SendEmail());
+            
             return "Hello World";
         }
         

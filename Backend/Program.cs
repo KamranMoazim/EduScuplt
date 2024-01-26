@@ -19,6 +19,10 @@ using Stripe;
 using Backend.Repositories.StripeRepo;
 using Backend.Repositories.StudentRepo;
 using Backend.Repositories.CourseVideoRepo;
+using Hangfire;
+using Hangfire.SqlServer;
+using Backend.Services;
+using Hangfire.Storage.SQLite;
 
 
 
@@ -60,6 +64,9 @@ builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<CardService>();
 builder.Services.AddScoped<IStripeRepository, StripeRepository>();
 
+
+// hangfire services
+builder.Services.AddTransient<IBackendJobService, BackendJobService>();
 
 
 builder.Services.AddControllers();
@@ -147,6 +154,27 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
+
+
+// adding hanfire
+builder.Services.AddHangfire(config => config
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    // .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+    // .UseSqlServerStorage("Data Source=MyLocalDatabase.db", new SqlServerStorageOptions
+    // {
+    //     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+    //     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+    //     QueuePollInterval = TimeSpan.Zero,
+    //     UseRecommendedIsolationLevel = true,
+    //     DisableGlobalLocks = true
+    // })
+    .UseSQLiteStorage("Data Source=MyLocalDatabase.db")
+);
+builder.Services.AddHangfireServer();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -197,6 +225,12 @@ app.MapControllers();
 app.MapGet("/", () => "Hello World from KAMRAN!");
 
 
+
+// for hangfire
+app.UseHangfireDashboard();
+app.MapHangfireDashboard();
+// RecurringJob.AddOrUpdate<IBackendJobService>(x => x.SyncData(), "*/1 * * * *");
+RecurringJob.AddOrUpdate<IBackendJobService>(x => x.UpdateDatabase(), Cron.Minutely);
 
 // app.Run();
 app.Run("http://0.0.0.0:9090");
