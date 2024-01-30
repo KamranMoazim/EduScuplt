@@ -6,7 +6,7 @@
   "phoneNumber": "03231445957",
   "userType": "Student"
 }
-
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJza2FtcmFuQGV4YW1wbGUuY29tIiwicm9sZSI6IlN0dWRlbnQiLCJuYmYiOjE3MDY2MjY1NTMsImV4cCI6MTcwNjczNDU1MywiaWF0IjoxNzA2NjI2NTUzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjYxOTU1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwIn0.hUMy5o-esY_Rw6rwDDR3ivKvdAE7kZvU1QZcuqXnKlU
 
 {
   "firstName": "kamran",
@@ -26,7 +26,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwidW5pcXVlX25hbWUiOiJpa2F
   "phoneNumber": "03231445957",
   "userType": "Admin"
 }
-
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzIiwidW5pcXVlX25hbWUiOiJha2FtcmFuQGV4YW1wbGUuY29tIiwicm9sZSI6IkFkbWluIiwibmJmIjoxNzA2NjI2NjEyLCJleHAiOjE3MDY3MzQ2MTIsImlhdCI6MTcwNjYyNjYxMiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo2MTk1NSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDIwMCJ9.nq4NP9GCJzXOGek-SWOPcbZFPJv4mUp0AikLUcKmpDk
 
 {
   "title": "AI Modern Techs",
