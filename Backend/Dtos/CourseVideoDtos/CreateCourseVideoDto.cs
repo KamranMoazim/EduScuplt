@@ -1,6 +1,7 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Backend.Dtos.CourseVideoDtos
 {
@@ -17,10 +18,12 @@ namespace Backend.Dtos.CourseVideoDtos
         [Url(ErrorMessage = "Thumbnail URL must be a valid URL.")]
         public string ThumbnailURL { get; set; }
 
-        [Required(ErrorMessage = "Course ID is required.")]
+        // [Required(ErrorMessage = "Course ID is required.")]
+        [JsonIgnore]
         public int CourseId { get; set; }
 
-        [Required(ErrorMessage = "Course Folder ID is required.")]
+        // [Required(ErrorMessage = "Course Folder ID is required.")]
+        [JsonIgnore]
         public int? CourseFoldersId { get; set; }
 
     }

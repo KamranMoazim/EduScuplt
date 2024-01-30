@@ -1,5 +1,7 @@
 
 using System.Security.Claims;
+using Backend.Dtos.CourseDtos;
+using Backend.Dtos.InterestDtos;
 using Backend.Models;
 using Backend.Repositories.CourseFolderRepo;
 using Backend.Repositories.CourseRepo;
@@ -43,14 +45,14 @@ namespace Backend.Controllers
 
         [HttpGet("{studentId}/interests")]
         [Authorize(Roles = "Student")]
-        public List<Interests> GetStudentsInterests(long studentId)
+        public List<InterestDto> GetStudentsInterests(long studentId)
         {
             return InterestRepository.GetStudentsInterests(studentId);
         }
 
         [HttpPut("{studentId}/interests")]
         [Authorize(Roles = "Student")]
-        public List<Interests> UpdateStudentInterests(long studentId, List<Interests> interests)
+        public List<InterestDto> UpdateStudentInterests(long studentId, List<InterestDto> interests)
         {
             return InterestRepository.UpdateStudentInterests(studentId, interests);
         }
@@ -58,7 +60,7 @@ namespace Backend.Controllers
 
         [HttpGet("{studentId}/courses")]
         [Authorize(Roles = "Student")]
-        public IEnumerable<Course> GetStudentsCourses(long studentId)
+        public IEnumerable<CourseInfoDto> GetStudentsCourses(long studentId)
         {
             return CourseRepository.GetAllStudentsBoughtCourses(studentId);
         }

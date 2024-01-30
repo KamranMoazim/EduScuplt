@@ -9,7 +9,7 @@ namespace Backend.Repositories.CourseFolderRepo
         CourseFoldersDto AddVideoToCourseFolder(long courseFolderId, long courseVideoId);
         CourseFoldersDto RemoveVideoFromCourseFolder(long courseFolderId, long courseVideoId);
         CourseFoldersDto CreateCourseFolder(long courseId, CreateCourseFoldersDto courseFolder);
-        CourseFoldersDto UpdateCourseFolder(UpdateCourseInfoDto courseFolder);
+        CourseFoldersDto UpdateCourseFolder(UpdateCourseFolderNameDto courseFolder);
         bool DeleteCourseFolderById(long id);
         IEnumerable<CourseFoldersDto> GetAllCourseFoldersOfCourse(long courseId);
         CourseFoldersDto GetCourseFolderByIdAlongWithCourseVideos(long id);

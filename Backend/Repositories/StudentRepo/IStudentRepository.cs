@@ -11,5 +11,7 @@ namespace Backend.Repositories.StudentRepo
         
         long AddStudentPayment(StudentPayment studentPayment);
         bool MarkStudentPaymentAsPaid(string stripePaymentId);
+
+        Student GetStudentById(long studentId);
     }
 }

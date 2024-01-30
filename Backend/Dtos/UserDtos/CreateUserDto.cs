@@ -31,7 +31,7 @@ namespace Backend.Dtos.UserDtos
         // [Required(ErrorMessage = "UserType is required.")]
         // public string UserType { get; set; }
         [Required(ErrorMessage = "UserType is required.")]
-        [EnumDataType(typeof(ProjectEnums.UserType), ErrorMessage = "Invalid UserType value.")]
+        [EnumDataType(typeof(ProjectEnums.UserType), ErrorMessage = "Invalid UserType value., It can be only Instructor, Student, Admin")]
         public string UserType { get; set; }
     }
 }

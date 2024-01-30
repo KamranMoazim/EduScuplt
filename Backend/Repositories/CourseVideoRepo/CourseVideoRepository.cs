@@ -69,6 +69,14 @@ namespace Backend.Repositories.CourseVideoRepo
             return _mapper.Map<CourseVideoDto>(courseVideo);
         }
 
+        public List<CourseVideoDto> GetCourseVideosOfCourse(long courseId)
+        {
+
+            List<CourseVideo> courseVideos = _context.CourseVideos.Where(courseVideo => courseVideo.CourseId == courseId).ToList();
+
+            return _mapper.Map<List<CourseVideoDto>>(courseVideos);
+        }
+
         public CourseVideoDto UpdateCourseVideo(UpdateCourseVideoDto courseVideo)
         {
                 

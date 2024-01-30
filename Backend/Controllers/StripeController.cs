@@ -8,6 +8,7 @@ using Backend.Repositories.CourseRepo;
 using Backend.Repositories.StripeRepo;
 using Backend.Repositories.StudentRepo;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
 using Stripe.Checkout;
 
 namespace Backend.Controllers
@@ -33,13 +34,13 @@ namespace Backend.Controllers
         }
 
 
-        [HttpPost("customer/add")]
-        public ActionResult<StripeCustomer> AddStripeCustomer([FromBody] AddStripeCustomer customer,CancellationToken ct)
-        {
-            StripeCustomer createdCustomer = StripeRepository.AddStripeCustomer(customer,ct);
+        // [HttpPost("customer/add")]
+        // public ActionResult<StripeCustomer> AddStripeCustomer([FromBody] AddStripeCustomer customer)
+        // {
+        //     StripeCustomer createdCustomer = StripeRepository.AddStripeCustomer(customer);
 
-            return StatusCode(StatusCodes.Status200OK, createdCustomer);
-        }
+        //     return StatusCode(StatusCodes.Status200OK, createdCustomer);
+        // }
 
         // [HttpPost("payment/add")]
         // public ActionResult<StripePayment> AddStripePayment([FromBody] AddStripePayment payment,CancellationToken ct)
@@ -49,12 +50,23 @@ namespace Backend.Controllers
         //     return StatusCode(StatusCodes.Status200OK, createdPayment);
         // }
 
-        [HttpPost("payment/add")]
+        [HttpPost("buy-course/payment/add")]
         public string CreatePayment([FromBody] AddStripePayment payment)
         {
 
+
+
             long courseId = Convert.ToInt64(payment.courseId);
             long studentId = Convert.ToInt64(payment.studentId);
+
+            Student student = StudentRepository.GetStudentById(studentId);
+
+
+
+            AddStripeCustomer customer = new AddStripeCustomer(student.User.FirstName,student.User.Email);
+            StripeCustomer createdCustomer = StripeRepository.AddStripeCustomer(customer);
+
+
 
             Course course = CourseRepository.GetCourseById(courseId);
 
@@ -78,15 +90,15 @@ namespace Backend.Controllers
             CourseRepository.BuyCourse(studentId, courseId);
 
 
-            string successUrl = "http://localhost:3000/payment/success/"+studentPayment.StripePaymentID;
-            string cancelUrl = "http://localhost:3000/payment/cancel/"+studentPayment.StripePaymentID;
+            string successUrl = "http://localhost:3000/api/Stripe/payment/success/"+studentPayment.StripePaymentID;
+            string cancelUrl = "http://localhost:3000/api/Stripe/payment/cancel/"+studentPayment.StripePaymentID;
 
             string checkoutUrl = StripeRepository.CreateCheckoutUrl(Convert.ToDecimal(amount), currency, courseName, payment.studentId, successUrl, cancelUrl);
 
             return checkoutUrl;
         }
 
-        [HttpPost("payment/success/{stringPaymentId}")]
+        [HttpGet("payment/success/{stringPaymentId}")]
         public ActionResult<string> ConfirmPayment(string stringPaymentId)
         {
             StudentRepository.MarkStudentPaymentAsPaid(stringPaymentId);
@@ -94,7 +106,7 @@ namespace Backend.Controllers
             return StatusCode(StatusCodes.Status200OK, "Payment confirmed");
         }
 
-        [HttpPost("payment/cancel/{stringPaymentId}")]
+        [HttpGet("payment/cancel/{stringPaymentId}")]
         public ActionResult<string> FailedPayment(string stringPaymentId)
         {
             return StatusCode(StatusCodes.Status400BadRequest, "Payment failed");

@@ -1,6 +1,7 @@
 
 
 using AutoMapper;
+using Backend.Dtos.InterestDtos;
 using Backend.Models;
 
 namespace Backend.Repositories.InterestRepo
@@ -26,28 +27,39 @@ namespace Backend.Repositories.InterestRepo
             return _context.Interests.FirstOrDefault(i => i.Title == name);
         }
 
-        public Interests CreateInterest(Interests interest)
+        public Interests CreateInterest(CreateInterestDto interest)
         {
-            _context.Interests.Add(interest);
+            Interests newInterest = _mapper.Map<Interests>(interest);
+            _context.Interests.Add(newInterest);
             _context.SaveChanges();
-            return interest;
+            return newInterest;
         }
 
-        public Interests UpdateInterest(Interests interest)
+        public Interests UpdateInterest(long interestId, UpdateInterestDto interest)
         {
-            _context.Interests.Update(interest);
+            Interests interestToUpdate = _context.Interests.FirstOrDefault(i => i.ID == interestId);
+            if (interestToUpdate == null)
+            {
+                return null;
+            }
+            _mapper.Map(interest, interestToUpdate);
             _context.SaveChanges();
-            return interest;
+            return interestToUpdate;
         }
 
-        public void DeleteInterest(Interests interest)
+        public void DeleteInterest(long interestId)
         {
-            _context.Interests.Remove(interest);
+            Interests interestToDelete = _context.Interests.FirstOrDefault(i => i.ID == interestId);
+            if (interestToDelete == null)
+            {
+                return;
+            }
+            _context.Interests.Remove(interestToDelete);
             _context.SaveChanges();
         }
 
 
-        public List<Interests> GetStudentsInterests(long studentId)
+        public List<InterestDto> GetStudentsInterests(long studentId)
         {
             List<StudentInterests> studentInterests = _context.StudentInterests.Where(i => i.StudentId == studentId).ToList();
             List<Interests> interests = new List<Interests>();
@@ -55,11 +67,14 @@ namespace Backend.Repositories.InterestRepo
             {
                 interests.Add(_context.Interests.FirstOrDefault(i => i.ID == studentInterest.InterestId));
             }
-            return interests;
+
+            List<InterestDto> interestDtos = _mapper.Map<List<InterestDto>>(interests);
+
+            return interestDtos;
         }
 
         // updated student interests
-        public List<Interests> UpdateStudentInterests(long studentId, List<Interests> interests)
+        public List<InterestDto> UpdateStudentInterests(long studentId, List<InterestDto> interests)
         {
             List<StudentInterests> studentInterests = _context.StudentInterests.Where(i => i.StudentId == studentId).ToList();
             foreach (var studentInterest in studentInterests)

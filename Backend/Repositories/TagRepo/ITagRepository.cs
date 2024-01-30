@@ -10,7 +10,7 @@ namespace Backend.Repositories.TagRepo
     {
         CreateTagDto CreateTag(CreateTagDto tagDto);
         bool DeleteTagById(long id);
-        TagDto UpdateTag(TagDto tagDto);
+        TagDto UpdateTag(long id, UpdateTagDto tagDto);
         IEnumerable<TagDto> GetAllTags();
         IEnumerable<TagDto> GetCourseTags(long courseId);
         TagDto GetTagById(long id);

@@ -1,0 +1,42 @@
+{
+  "firstName": "kamran",
+  "lastName": "moazim",
+  "email": "skamran@example.com",
+  "password": "Testing@132",
+  "phoneNumber": "03231445957",
+  "userType": "Student"
+}
+
+
+{
+  "firstName": "kamran",
+  "lastName": "moazim",
+  "email": "ikamran@example.com",
+  "password": "Testing@132",
+  "phoneNumber": "03231445957",
+  "userType": "Instructor"
+}
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyIiwidW5pcXVlX25hbWUiOiJpa2FtcmFuQGV4YW1wbGUuY29tIiwicm9sZSI6Ikluc3RydWN0b3IiLCJuYmYiOjE3MDY2MzE4MzIsImV4cCI6MTcwNjczOTgzMiwiaWF0IjoxNzA2NjMxODMyLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjYxOTU1IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0MjAwIn0.ZBzAstvywK07F51pfHjEoboNNNsVOYUj9oEHHZs_uKc
+
+{
+  "firstName": "kamran",
+  "lastName": "moazim",
+  "email": "akamran@example.com",
+  "password": "Testing@132",
+  "phoneNumber": "03231445957",
+  "userType": "Admin"
+}
+
+
+{
+  "title": "AI Modern Techs",
+  "description": "THis is a long description",
+  "price": 10,
+  "thumbnailURL": "http://0.0.0.0:9090/swagger/test.png"
+}
+
+{
+  "title": "video 1",
+  "videoURL": "http://0.0.0.0:9090/swagger/index.mp4",
+  "thumbnailURL": "http://0.0.0.0:9090/swagger/index.png"
+}

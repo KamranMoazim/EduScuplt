@@ -1,9 +1,13 @@
 
 using System.Security.Claims;
+using Backend.Dtos.CourseDtos;
+using Backend.Dtos.GenericDTOs;
+using Backend.Models;
 using Backend.Repositories.CourseFolderRepo;
 using Backend.Repositories.CourseRepo;
 using Backend.Repositories.CourseVideoRepo;
 using Backend.Repositories.TagRepo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -21,7 +25,7 @@ namespace Backend.Controllers
         public InstructorController(
             ICourseRepository courseRepository, 
             ICourseFolderRepository courseFolderRepository, 
-            TagRepository tagRepository,
+            ITagRepository tagRepository,
             ICourseVideoRepository courseVideoRepository
             )
         {
@@ -36,6 +40,35 @@ namespace Backend.Controllers
 
 
 
+        [HttpGet("instructor-courses/")]
+        [Authorize(Roles = "Instructor")]
+        public ActionResult<CourseInfoDto> GetAllCoursesOfInstructor()
+        {
+            IsUserIdAvailable(out int userId);
+            
+            return Ok(CourseRepository.GetAllCoursesOfInstructor(userId));
+        }
+
+        [HttpPost("instructor-courses/course-approval-request/{courseId}")]
+        [Authorize(Roles = "Instructor")]
+        public ActionResult<CreateResponseDto> GetAllCoursesOfInstructor(int courseId)
+        {
+            IsUserIdAvailable(out int userId);
+
+            Course course = CourseRepository.GetCourseById(courseId);
+            course.IsApproved = false;
+            course.ApprovedById = null;
+            course.ReleaseDate = DateTime.Now;
+            CourseRepository.UpdateCourse(course);
+
+            CreateResponseDto createResponseDto = new CreateResponseDto
+            {
+                Status = "Success",
+                Message = "Course Approval Requested successfully"
+            };
+
+            return Ok(createResponseDto);
+        }
 
 
 

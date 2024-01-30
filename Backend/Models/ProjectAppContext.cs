@@ -54,7 +54,8 @@ namespace Backend.Models
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             // connect to sqlite database
-            options.UseSqlite("Data Source=MyLocalDatabase.db");
+            options.UseSqlite("Data Source=MySqliteLocalDatabase.db");
+            // options.UseSqlServer("server=localhost;database=edusculpt_db;trusted_connection=false;User Id=sa;Password=Contraseña12345678;Persist Security Info=False;Encrypt=False");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

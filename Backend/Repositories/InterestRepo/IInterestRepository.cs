@@ -1,5 +1,6 @@
 
 
+using Backend.Dtos.InterestDtos;
 using Backend.Models;
 
 namespace Backend.Repositories.InterestRepo
@@ -8,10 +9,10 @@ namespace Backend.Repositories.InterestRepo
     {
         Interests GetInterestById(long id);
         Interests GetInterestByName(string name);
-        Interests CreateInterest(Interests interest);
-        Interests UpdateInterest(Interests interest);
-        void DeleteInterest(Interests interest);
-        List<Interests> GetStudentsInterests(long studentId);
-        List<Interests> UpdateStudentInterests(long studentId, List<Interests> interests);
+        Interests CreateInterest(CreateInterestDto interest);
+        Interests UpdateInterest(long interestId, UpdateInterestDto interest);
+        void DeleteInterest(long interestId);
+        List<InterestDto> GetStudentsInterests(long studentId);
+        List<InterestDto> UpdateStudentInterests(long studentId, List<InterestDto> interests);
     }
 }

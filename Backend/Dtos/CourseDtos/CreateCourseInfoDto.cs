@@ -1,6 +1,8 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Backend.Dtos.CourseDtos
 {
@@ -16,7 +18,7 @@ namespace Backend.Dtos.CourseDtos
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Course Price is required.")]
-        [Range(50, 1000, ErrorMessage = "Course Price must be between 50 and 1000.")]
+        [Range(10, 150, ErrorMessage = "Course Price must be between $10 and $150.")]
         public double Price { get; set; } = 0.0;
 
         [Url(ErrorMessage = "Thumbnail URL must be a valid URL.")]
@@ -26,6 +28,8 @@ namespace Backend.Dtos.CourseDtos
 
         // Instructor Related Properties
         // [Required(ErrorMessage = "Instructor ID is required.")]
+        [JsonIgnore]
+        [NotMapped]
         public int InstructorId { get; set; }
     }
 }

@@ -160,8 +160,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddHangfire(config => config
     .UseSimpleAssemblyNameTypeSerializer()
     .UseRecommendedSerializerSettings()
-    // .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
-    // .UseSqlServerStorage("Data Source=MyLocalDatabase.db", new SqlServerStorageOptions
+    // .UseSqlServerStorage("server=localhost;database=edusculpt_db;trusted_connection=false;User Id=sa;Password=Contraseña12345678;Persist Security Info=False;Encrypt=False", new SqlServerStorageOptions
     // {
     //     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
     //     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
@@ -169,7 +168,7 @@ builder.Services.AddHangfire(config => config
     //     UseRecommendedIsolationLevel = true,
     //     DisableGlobalLocks = true
     // })
-    .UseSQLiteStorage("Data Source=MyLocalDatabase.db")
+    .UseSQLiteStorage("MySqliteLocalDatabase.db")
 );
 builder.Services.AddHangfireServer();
 
@@ -230,7 +229,7 @@ app.MapGet("/", () => "Hello World from KAMRAN!");
 app.UseHangfireDashboard();
 app.MapHangfireDashboard();
 // RecurringJob.AddOrUpdate<IBackendJobService>(x => x.SyncData(), "*/1 * * * *");
-RecurringJob.AddOrUpdate<IBackendJobService>(x => x.UpdateDatabase(), Cron.Minutely);
+// RecurringJob.AddOrUpdate<IBackendJobService>(x => x.UpdateDatabase(), Cron.Minutely);
 
 // app.Run();
 app.Run("http://0.0.0.0:9090");

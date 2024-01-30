@@ -43,5 +43,18 @@ namespace Backend.Repositories.StudentRepo
 
             return true;
         }
+
+
+        public Student GetStudentById(long studentId)
+        {
+            Student? student = _context.Student.Where(s => s.ID == studentId).FirstOrDefault();
+
+            if (student == null)
+            {
+                throw new NotFoundException("Student not found");
+            }
+
+            return student;
+        }
     }
 }

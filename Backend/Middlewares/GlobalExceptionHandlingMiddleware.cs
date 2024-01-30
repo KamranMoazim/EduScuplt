@@ -2,7 +2,7 @@
 using System.Net;
 using Backend.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.Sqlite;
+// using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Middlewares
@@ -89,6 +89,18 @@ namespace Backend.Middlewares
                     });
                 }
                 else if (ex is InvalidException)
+                {
+                    // context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    // context.Response.ContentType = "application/problem+json";
+                    await context.Response.WriteAsJsonAsync(new ProblemDetails
+                    {
+                        Status = context.Response.StatusCode,
+                        Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+                        Title = "Bad Request",
+                        Detail = ex.Message,
+                    });
+                }
+                else if (ex is BadRequestException)
                 {
                     // context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     // context.Response.ContentType = "application/problem+json";

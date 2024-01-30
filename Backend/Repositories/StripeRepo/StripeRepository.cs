@@ -28,7 +28,7 @@ namespace Backend.Repositories.StripeRepo
         // sk_test_51IEw0JBssRAZJMFRft7YUEnbiCnbcduo5dEswLICerDOhXdyL4b1IRnXEJdMLuHfbeUwoCVvGHgnCb3z8qbqqdSD007337Ix0a
         // sk_test_51IEw0JBssRAZJMFRft7YUEnbiCnbcduo5dEswLICerDOhXdyL4b1IRnXEJdMLuHfbeUwoCVvGHgnCb3z8qbqqdSD007337Ix0a
 
-        public StripeCustomer AddStripeCustomer(AddStripeCustomer customer, CancellationToken ct)
+        public StripeCustomer AddStripeCustomer(AddStripeCustomer customer)
         {
             // Set Customer options
             CustomerCreateOptions customerOptions = new CustomerCreateOptions
@@ -40,7 +40,17 @@ namespace Backend.Repositories.StripeRepo
             // Create customer at Stripe
             Customer createdCustomer = _customerService.Create(customerOptions, null);
 
+            // _customerService.Get(createdCustomer.Id);
+
             return new StripeCustomer(createdCustomer.Name, createdCustomer.Email, createdCustomer.Id);
+        }
+
+        public StripeCustomer GetStripeCustomer(long customerId)
+        {
+            // Customer customer = _customerService.Get(customerId);
+
+            // return new StripeCustomer(customer.Name, customer.Email, customer.Id);
+            return null;
         }
 
 

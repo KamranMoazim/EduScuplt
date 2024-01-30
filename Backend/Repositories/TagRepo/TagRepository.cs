@@ -68,9 +68,9 @@ namespace Backend.Repositories.TagRepo
             return _mapper.Map<TagDto>(tag);
         }
 
-        public TagDto UpdateTag(TagDto tagDto)
+        public TagDto UpdateTag(long id, UpdateTagDto tagDto)
         {
-            Tags? tag = _context.Tags.Find(tagDto.Id);
+            Tags? tag = _context.Tags.Find(id);
 
             if (tag == null)
             {

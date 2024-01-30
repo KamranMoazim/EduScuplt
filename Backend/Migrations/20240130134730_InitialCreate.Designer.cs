@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ProjectAppContext))]
-    [Migration("20231201154030_MakeFewFieldsNullableInUser")]
-    partial class MakeFewFieldsNullableInUser
+    [Migration("20240130134730_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,14 +22,29 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Admin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
 
                     b.HasIndex("UserId");
 
@@ -38,22 +53,38 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Course", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ApprovedById")
+                    b.Property<long?>("ApprovedById")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(1000)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("InstructorId")
+                    b.Property<long>("InstructorId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
@@ -62,11 +93,11 @@ namespace Backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ThumbnailURL")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -80,16 +111,23 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.CourseDiscount", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Code")
                         .IsRequired()
+                        .HasMaxLength(15)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CourseId")
+                    b.Property<long>("CourseId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("Discount")
                         .HasColumnType("REAL");
@@ -97,8 +135,17 @@ namespace Backend.Migrations
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("InstructorId")
+                    b.Property<long>("InstructorId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ID");
 
@@ -111,15 +158,31 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.CourseFolders", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CourseId")
+                    b.Property<long>("CourseId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("FolderName")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -131,15 +194,31 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.CourseMarketing", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AdminId")
+                    b.Property<long>("AdminId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CourseDescription")
                         .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -151,15 +230,30 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.CourseVideo", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CourseFoldersID")
+                    b.Property<long?>("CourseFoldersId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CourseId")
+                    b.Property<long>("CourseId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ThumbnailURL")
                         .IsRequired()
@@ -167,6 +261,7 @@ namespace Backend.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("VideoURL")
@@ -175,7 +270,7 @@ namespace Backend.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CourseFoldersID");
+                    b.HasIndex("CourseFoldersId");
 
                     b.HasIndex("CourseId");
 
@@ -184,23 +279,38 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Instructor", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("AccountDetails")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AccountNo")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ApprovedById")
+                    b.Property<long?>("ApprovedById")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("PendingAmount")
                         .HasColumnType("REAL");
@@ -208,7 +318,7 @@ namespace Backend.Migrations
                     b.Property<double>("TotalEarnedAmount")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("WithdrawnAmount")
@@ -225,12 +335,27 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.InstructorPayment", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("InstructorId")
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("InstructorId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("PaidAmount")
                         .HasColumnType("REAL");
@@ -251,12 +376,28 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Interests", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Title")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -266,8 +407,17 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Notification", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsRead")
@@ -275,19 +425,26 @@ namespace Backend.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NotificationType")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("RelatedEntityId")
+                    b.Property<long?>("RelatedEntityId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
@@ -301,47 +458,38 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Student", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Student");
                 });
 
-            modelBuilder.Entity("Backend.Models.StudentCourseVideoLikes", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CourseVideoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsLiked")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CourseVideoId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentCourseVideoLikes");
-                });
-
             modelBuilder.Entity("Backend.Models.StudentCourses", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -351,26 +499,47 @@ namespace Backend.Migrations
                     b.Property<double>("CourseCompleteProgressPercentage")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("CourseId")
+                    b.Property<long>("CourseId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CourseStartDate")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsReviewed")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("LastProgressDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Rating")
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("Rating")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Review")
-                        .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("StudentId")
+                    b.Property<long>("StudentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("StudentPaymentId")
+                    b.Property<long>("StudentPaymentId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
@@ -386,17 +555,32 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.StudentInterests", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("InterestId")
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("InterestId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("StudentId")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("StudentId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ID");
 
                     b.HasIndex("InterestId");
 
@@ -407,24 +591,42 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.StudentPayment", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("ActualAmount")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("CourseDiscountId")
+                    b.Property<long?>("CourseDiscountId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CourseId")
+                    b.Property<long>("CourseId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("DiscountedAmount")
                         .HasColumnType("REAL");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsDiscounted")
                         .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("PaidAmount")
                         .HasColumnType("REAL");
@@ -447,12 +649,28 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.Tags", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Tag")
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -462,12 +680,18 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.User", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("About")
                         .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -479,9 +703,18 @@ namespace Backend.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
@@ -509,27 +742,43 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.VideoComments", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<long>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Comment")
                         .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CommentById")
+                    b.Property<long>("CommentById")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CommentDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("CourseVideoId")
+                    b.Property<long>("CourseVideoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsPublic")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ReplyToId")
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("ReplyToId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("ID");
@@ -545,10 +794,10 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("CourseTags", b =>
                 {
-                    b.Property<int>("CoursesID")
+                    b.Property<long>("CoursesID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("TagsID")
+                    b.Property<long>("TagsID")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("CoursesID", "TagsID");
@@ -573,9 +822,7 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.Admin", "ApprovedBy")
                         .WithMany("Courses")
-                        .HasForeignKey("ApprovedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApprovedById");
 
                     b.HasOne("Backend.Models.Instructor", "Instructor")
                         .WithMany("Courses")
@@ -631,9 +878,9 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.CourseVideo", b =>
                 {
-                    b.HasOne("Backend.Models.CourseFolders", null)
+                    b.HasOne("Backend.Models.CourseFolders", "CourseFolders")
                         .WithMany("CourseVideos")
-                        .HasForeignKey("CourseFoldersID");
+                        .HasForeignKey("CourseFoldersId");
 
                     b.HasOne("Backend.Models.Course", "Course")
                         .WithMany("CourseVideos")
@@ -642,15 +889,15 @@ namespace Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+
+                    b.Navigation("CourseFolders");
                 });
 
             modelBuilder.Entity("Backend.Models.Instructor", b =>
                 {
                     b.HasOne("Backend.Models.Admin", "ApprovedBy")
                         .WithMany("Instructors")
-                        .HasForeignKey("ApprovedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApprovedById");
 
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany()
@@ -708,25 +955,6 @@ namespace Backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Backend.Models.StudentCourseVideoLikes", b =>
-                {
-                    b.HasOne("Backend.Models.CourseVideo", "CourseVideo")
-                        .WithMany("StudentCourseVideoLikes")
-                        .HasForeignKey("CourseVideoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Backend.Models.Student", "Student")
-                        .WithMany("StudentCourseVideoLikes")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CourseVideo");
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("Backend.Models.StudentCourses", b =>
                 {
                     b.HasOne("Backend.Models.Course", "Course")
@@ -777,9 +1005,7 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.CourseDiscount", "CourseDiscount")
                         .WithMany()
-                        .HasForeignKey("CourseDiscountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseDiscountId");
 
                     b.HasOne("Backend.Models.Course", "Course")
                         .WithMany()
@@ -859,8 +1085,6 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.CourseVideo", b =>
                 {
-                    b.Navigation("StudentCourseVideoLikes");
-
                     b.Navigation("VideoComments");
                 });
 
@@ -881,8 +1105,6 @@ namespace Backend.Migrations
             modelBuilder.Entity("Backend.Models.Student", b =>
                 {
                     b.Navigation("StudentCourse");
-
-                    b.Navigation("StudentCourseVideoLikes");
 
                     b.Navigation("StudentInterests");
                 });

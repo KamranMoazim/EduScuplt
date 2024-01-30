@@ -51,6 +51,10 @@ namespace Backend.Repositories.InstructorRepo
             return _context.Instructors.ToList();
         }
 
+        public List<Instructor> GetAllInstructorsForAdminApproval()
+        {
 
+            return _context.Instructors.Where(i => i.IsApproved == false).ToList();
+        }
     }
 }

@@ -1,6 +1,8 @@
 
+using Backend.Dtos.GenericDTOs;
 using Backend.Dtos.VideoCommentsDtos;
 using Backend.Repositories.CommentRepo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -17,15 +19,17 @@ namespace Backend.Controllers
             CommentRepository = commentRepository;
         }
 
-        [HttpGet("/{videoId}")]
-        public IActionResult GetComments(int videoId)
+        [HttpGet("{videoId}")]
+        [Authorize]
+        public ActionResult<List<VideoCommentsDto>> GetComments(int videoId)
         {
 
             return CommentRepository.ReadComments(videoId).Count > 0 ? Ok(CommentRepository.ReadComments(videoId)) : NotFound("No comments found");
         }
 
-        [HttpPost("/{videoId}")]
-        public IActionResult PostComment(int videoId, [FromBody] CreateVideoCommentsDto comment)
+        [HttpPost("{videoId}")]
+        [Authorize]
+        public ActionResult<CreateResponseDto> PostComment(int videoId, [FromBody] CreateVideoCommentsDto comment)
         {
             comment.CourseVideoId = videoId;
 

@@ -22,7 +22,7 @@ namespace Backend.Repositories.CourseFolderRepo
 
         public CourseFoldersDto AddVideoToCourseFolder(long courseFolderId, long courseVideoId)
         {
-            CourseFolders courseFolders = _context.CourseFolders.Find(courseFolderId);
+            CourseFolders courseFolders = _context.CourseFolders.Where( cf => cf.ID == courseFolderId).Include(cf => cf.CourseVideos).FirstOrDefault();
 
             if (courseFolders == null)
             {
@@ -55,6 +55,16 @@ namespace Backend.Repositories.CourseFolderRepo
             if (course == null)
             {
                 throw new NotFoundException("Course not found");
+            }
+
+            List<CourseFolders> allCourseFolders = _context.CourseFolders.Where(cf => cf.CourseId == courseId).ToList();
+
+            foreach (CourseFolders cf in allCourseFolders)
+            {
+                if (cf.FolderName == courseFolder.FolderName)
+                {
+                    throw new BadRequestException("Course Folder with this name already exists");
+                }
             }
 
             CourseFolders courseFolders = _mapper.Map<CourseFolders>(courseFolder);
@@ -133,7 +143,7 @@ namespace Backend.Repositories.CourseFolderRepo
             return _mapper.Map<CourseFoldersDto>(courseFolders);
         }
 
-        public CourseFoldersDto UpdateCourseFolder(UpdateCourseInfoDto courseFolder)
+        public CourseFoldersDto UpdateCourseFolder(UpdateCourseFolderNameDto courseFolder)
         {
 
             CourseFolders courseFolders = _context.CourseFolders.Find(courseFolder.ID);

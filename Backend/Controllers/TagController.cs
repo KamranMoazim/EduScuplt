@@ -39,16 +39,16 @@ namespace Backend.Controllers
             return Ok(tagDto);
         }
 
-        [HttpDelete("delete-tag/{id}")]
-        public ActionResult<bool> DeleteTag(int id)
+        [HttpDelete("delete-tag/{tagId}")]
+        public ActionResult<bool> DeleteTag(int tagId)
         {
-            return Ok(TagRepository.DeleteTagById(id));
+            return NoContent();
         }
 
-        [HttpPut("update-tag")]
-        public ActionResult<TagDto> UpdateTag([FromBody] TagDto tagDto)
+        [HttpPut("update-tag/{tagId}")]
+        public ActionResult<TagDto> UpdateTag(int tagId, [FromBody] UpdateTagDto tagDto)
         {
-            return Ok(TagRepository.UpdateTag(tagDto));
+            return Ok(TagRepository.UpdateTag(tagId, tagDto));
         }
 
 

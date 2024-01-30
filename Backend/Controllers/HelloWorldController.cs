@@ -20,7 +20,7 @@ namespace Backend.Controllers
         }
         
         
-        [HttpGet("/authonly")]
+        [HttpGet("authonly")]
         [Authorize]
         public ActionResult<string> GetAuth()
         {

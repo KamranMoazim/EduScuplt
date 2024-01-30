@@ -42,13 +42,13 @@ namespace Backend.Controllers
             InstructorRepository = instructorRepository;
         }
 
-        [HttpGet("courses")]
-        public ActionResult<IEnumerable<Course>> GetAllCourses()
+        [HttpGet]
+        public ActionResult<IEnumerable<CourseInfoDto>> GetAllCourses()
         {
             return Ok(CourseRepository.AllCourses());
         }
 
-        [HttpGet("courses/{tagName}")]
+        [HttpGet("tag/{tagName}")]
         public ActionResult<IEnumerable<CourseInfoDto>> GetCoursesByTagName(string tagName)
         {
             return Ok(CourseRepository.GetCoursesByTagName(tagName));
@@ -56,7 +56,7 @@ namespace Backend.Controllers
 
 
 
-        [HttpGet("/courses/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<CourseInfoDto> GetSingleCourse(int id)
         {
             var course = CourseRepository.GetCourseById(id);
@@ -83,7 +83,7 @@ namespace Backend.Controllers
             return Ok(courseInfoDto);
         }
 
-        [HttpPost("create-course")]
+        [HttpPost]
         [Authorize(Roles = "Instructor")]
         public ActionResult<CreateResponseDto> CreateCourse([FromBody] CreateCourseInfoDto courseDto)
         {
@@ -104,7 +104,7 @@ namespace Backend.Controllers
         }
 
 
-        [HttpPut("udpate-course/{courseId}")]
+        [HttpPut("{courseId}")]
         [Authorize(Roles = "Instructor")]
         public ActionResult<CreateResponseDto> UpdateCourse(int courseId, [FromBody] UpdateCourseInfoDto courseDto)
         {
@@ -152,75 +152,75 @@ namespace Backend.Controllers
 
 
 
-        [HttpGet("/courses/instructor-courses/")]
-        [Authorize(Roles = "Instructor")]
-        public ActionResult<CourseInfoDto> GetAllCoursesOfInstructor()
-        {
-            IsUserIdAvailable(out int userId);
+        // [HttpGet("/courses/instructor-courses/")]
+        // [Authorize(Roles = "Instructor")]
+        // public ActionResult<CourseInfoDto> GetAllCoursesOfInstructor()
+        // {
+        //     IsUserIdAvailable(out int userId);
             
-            return Ok(CourseRepository.GetAllCoursesOfInstructor(userId));
-        }
+        //     return Ok(CourseRepository.GetAllCoursesOfInstructor(userId));
+        // }
 
-        [HttpPost("/courses/instructor-courses/course-approval-request/{courseId}")]
-        [Authorize(Roles = "Instructor")]
-        public ActionResult<CreateResponseDto> GetAllCoursesOfInstructor(int courseId)
-        {
-            IsUserIdAvailable(out int userId);
+        // [HttpPost("/courses/instructor-courses/course-approval-request/{courseId}")]
+        // [Authorize(Roles = "Instructor")]
+        // public ActionResult<CreateResponseDto> GetAllCoursesOfInstructor(int courseId)
+        // {
+        //     IsUserIdAvailable(out int userId);
 
-            Course course = CourseRepository.GetCourseById(courseId);
-            course.IsApproved = false;
-            course.ApprovedById = null;
-            course.ReleaseDate = DateTime.Now;
-            CourseRepository.UpdateCourse(course);
+        //     Course course = CourseRepository.GetCourseById(courseId);
+        //     course.IsApproved = false;
+        //     course.ApprovedById = null;
+        //     course.ReleaseDate = DateTime.Now;
+        //     CourseRepository.UpdateCourse(course);
 
-            CreateResponseDto createResponseDto = new CreateResponseDto
-            {
-                Status = "Success",
-                Message = "Course Approval Requested successfully"
-            };
+        //     CreateResponseDto createResponseDto = new CreateResponseDto
+        //     {
+        //         Status = "Success",
+        //         Message = "Course Approval Requested successfully"
+        //     };
 
-            return Ok(createResponseDto);
-        }
-
-
-        [HttpGet("/courses/students-courses/")]
-        [Authorize(Roles = "Student")]
-        public ActionResult<CourseInfoDto> GetAllStudentsBoughtCourses()
-        {
-            IsUserIdAvailable(out int userId);
-
-            return Ok(CourseRepository.GetAllStudentsBoughtCourses(userId));
-        }
+        //     return Ok(createResponseDto);
+        // }
 
 
+        // [HttpGet("student-courses/")]
+        // [Authorize(Roles = "Student")]
+        // public ActionResult<CourseInfoDto> GetAllStudentsBoughtCourses()
+        // {
+        //     IsUserIdAvailable(out int userId);
+
+        //     return Ok(CourseRepository.GetAllStudentsBoughtCourses(userId));
+        // }
 
 
 
 
 
-        [HttpGet("/courses/admin/unapproved/")]
-        [Authorize(Roles = "Admin")]
-        public ActionResult<CourseInfoDto> GetAllCoursesForAdminApproval()
-        {
-            IsUserIdAvailable(out int userId);
 
 
-            return Ok(CourseRepository.GetAllCoursesForAdminApproval());
-        }
+        // [HttpGet("/courses/admin/unapproved/")]
+        // [Authorize(Roles = "Admin")]
+        // public ActionResult<CourseInfoDto> GetAllCoursesForAdminApproval()
+        // {
+        //     IsUserIdAvailable(out int userId);
 
-        [HttpGet("/courses/admin/approve/{courseId}")]
-        [Authorize(Roles = "Admin")]
-        public ActionResult<CourseInfoDto> ApproveCourse(int courseId)
-        {
-            IsUserIdAvailable(out int userId);
 
-            Course course = CourseRepository.GetCourseById(courseId);
-            course.IsApproved = true;
-            course.ApprovedById = userId;
-            course.ReleaseDate = DateTime.Now;
-            CourseRepository.UpdateCourse(course);
-            return Ok(course);
-        }
+        //     return Ok(CourseRepository.GetAllCoursesForAdminApproval());
+        // }
+
+        // [HttpGet("/courses/admin/approve/{courseId}")]
+        // [Authorize(Roles = "Admin")]
+        // public ActionResult<CourseInfoDto> ApproveCourse(int courseId)
+        // {
+        //     IsUserIdAvailable(out int userId);
+
+        //     Course course = CourseRepository.GetCourseById(courseId);
+        //     course.IsApproved = true;
+        //     course.ApprovedById = userId;
+        //     course.ReleaseDate = DateTime.Now;
+        //     CourseRepository.UpdateCourse(course);
+        //     return Ok(course);
+        // }
 
 
 
@@ -234,35 +234,38 @@ namespace Backend.Controllers
 
         // Course Folders Related Routes
 
-        [HttpGet("/courses/{courseId}/course-folders")]
+        [HttpGet("{courseId}/course-folders")]
         public ActionResult<CourseFoldersDto> GetAllCourseFoldersOfCourse(int courseId)
         {
             IEnumerable<CourseFoldersDto> courseFoldersDto = CourseFolderRepository.GetAllCourseFoldersOfCourse(courseId);
             return Ok(courseFoldersDto);
         }
 
-        [HttpPost("/courses/{courseId}/course-folders")]
+        [HttpPost("{courseId}/course-folders")]
         public ActionResult<CourseFoldersDto> CreateCourseFolder(int courseId, [FromBody] CreateCourseFoldersDto courseFolder)
         {
             IsUserIdAvailable(out int userId);
+
+            courseFolder.CourseId = courseId;
 
             CourseFoldersDto courseFoldersDto = CourseFolderRepository.CreateCourseFolder(courseId, courseFolder);
             return Ok(courseFoldersDto);
         }
 
-        [HttpPut("/courses/course-folders/{courseFolderId}")]
-        public ActionResult<CourseFoldersDto> UpdateCourseFolder(int courseFolderId, [FromBody] UpdateCourseInfoDto courseFolder)
+        [HttpPut("{courseId}/course-folders/{courseFolderId}")]
+        public ActionResult<CourseFoldersDto> UpdateCourseFolder(int courseId, int courseFolderId, [FromBody] UpdateCourseFolderNameDto courseFolder)
         {
             IsUserIdAvailable(out int userId);
 
+            courseFolder.CourseId = courseId;
             courseFolder.ID = courseFolderId;
 
             CourseFoldersDto courseFoldersDto = CourseFolderRepository.UpdateCourseFolder(courseFolder);
             return Ok(courseFoldersDto);
         }
 
-        [HttpDelete("/courses/course-folders/{courseFolderId}")]
-        public ActionResult<CourseFoldersDto> DeleteCourseFolder(int courseFolderId)
+        [HttpDelete("{courseId}/course-folders/{courseFolderId}")]
+        public ActionResult<CourseFoldersDto> DeleteCourseFolder(int courseId, int courseFolderId)
         {
             IsUserIdAvailable(out int userId);
 
@@ -277,9 +280,9 @@ namespace Backend.Controllers
             }
         }
 
-        [HttpPost("/courses/course-folders/add-video/{courseFolderId}/{courseVideoId}")]
+        [HttpPost("{courseId}/course-folders/add-video/{courseFolderId}/{courseVideoId}")]
         [Authorize(Roles = "Instructor")]
-        public ActionResult<CourseFoldersDto> AddVideoToCourseFolder(int courseFolderId, int courseVideoId)
+        public ActionResult<CourseFoldersDto> AddVideoToCourseFolder(int courseId, int courseFolderId, int courseVideoId)
         {
             IsUserIdAvailable(out int userId);
 
@@ -287,9 +290,9 @@ namespace Backend.Controllers
             return Ok(courseFoldersDto);
         }
 
-        [HttpPost("/courses/course-folders/remove-video/{courseFolderId}/{courseVideoId}")]
+        [HttpPost("{courseId}/course-folders/remove-video/{courseFolderId}/{courseVideoId}")]
         [Authorize(Roles = "Instructor")]
-        public ActionResult<CourseFoldersDto> RemoveVideoFromCourseFolder(int courseFolderId, int courseVideoId)
+        public ActionResult<CourseFoldersDto> RemoveVideoFromCourseFolder(int courseId, int courseFolderId, int courseVideoId)
         {
             IsUserIdAvailable(out int userId);
 
@@ -297,8 +300,8 @@ namespace Backend.Controllers
             return Ok(courseFoldersDto);
         }
 
-        [HttpGet("/courses/course-folders/{courseFolderId}")]
-        public ActionResult<CourseFoldersDto> GetCourseFolderByIdAlongWithCourseVideos(int courseFolderId)
+        [HttpGet("{courseId}/course-folders/{courseFolderId}")]
+        public ActionResult<CourseFoldersDto> GetCourseFolderByIdAlongWithCourseVideos(int courseId, int courseFolderId)
         {
             CourseFoldersDto courseFoldersDto = CourseFolderRepository.GetCourseFolderByIdAlongWithCourseVideos(courseFolderId);
             return Ok(courseFoldersDto);
@@ -306,33 +309,51 @@ namespace Backend.Controllers
 
 
 
+
+
+
+
+
+
         // Course Videos Related Routes
 
-        [HttpPost("/courses/{courseId}/course-videos")]
+        [HttpGet("{courseId}/course-videos")]
+        [Authorize(Roles = "Instructor")]
+        public ActionResult<CourseVideoDto> GetCourseVideo(int courseId)
+        {
+            IsUserIdAvailable(out int userId);
+
+            return Ok(CourseVideoRepository.GetCourseVideosOfCourse(courseId));
+        }
+
+        [HttpPost("{courseId}/course-videos")]
         [Authorize(Roles = "Instructor")]
         public ActionResult<CourseVideoDto> CreateCourseVideo(int courseId, [FromBody] CreateCourseVideoDto courseVideo)
         {
             IsUserIdAvailable(out int userId);
 
+            courseVideo.CourseId = courseId;
+
             CourseVideoDto courseVideoDto = CourseVideoRepository.CreateCourseVideo(courseVideo);
             return Ok(courseVideoDto);
         }
 
-        [HttpPut("/courses/course-videos/{courseVideoId}")]
+        [HttpPut("{courseId}/course-videos/{courseVideoId}")]
         [Authorize(Roles = "Instructor")]
-        public ActionResult<CourseVideoDto> UpdateCourseVideo(int courseVideoId, [FromBody] UpdateCourseVideoDto courseVideo)
+        public ActionResult<CourseVideoDto> UpdateCourseVideo(int courseId, int courseVideoId, [FromBody] UpdateCourseVideoDto courseVideo)
         {
             IsUserIdAvailable(out int userId);
 
             courseVideo.ID = courseVideoId;
+            courseVideo.CourseId = courseId;
 
             CourseVideoDto courseVideoDto = CourseVideoRepository.UpdateCourseVideo(courseVideo);
             return Ok(courseVideoDto);
         }
 
-        [HttpDelete("/courses/course-videos/{courseVideoId}")]
+        [HttpDelete("{courseId}/course-videos/{courseVideoId}")]
         [Authorize(Roles = "Instructor")]
-        public ActionResult<bool> DeleteCourseVideo(int courseVideoId)
+        public ActionResult<bool> DeleteCourseVideo(int courseId, int courseVideoId)
         {
             IsUserIdAvailable(out int userId);
 
@@ -347,14 +368,82 @@ namespace Backend.Controllers
             }
         }
 
-        [HttpGet("/courses/course-videos/{courseVideoId}")]
-        public ActionResult<CourseVideoDto> GetCourseVideoById(int courseVideoId)
+        [HttpGet("{courseId}/course-videos/{courseVideoId}")]
+        public ActionResult<CourseVideoDto> GetCourseVideoById(int courseId, int courseVideoId)
         {
             CourseVideoDto courseVideoDto = CourseVideoRepository.GetCourseVideoById(courseVideoId);
             return Ok(courseVideoDto);
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Course Tags Related Routes
+
+        [HttpPost("{courseId}/course-tags")]
+        [Authorize(Roles = "Instructor")]
+        public ActionResult<CourseVideoDto> AddCourseTags(int courseId, [FromBody] List<long> tagsList)
+        {
+            IsUserIdAvailable(out int userId);
+
+            CourseRepository.AddTagsToCourse(courseId, tagsList);
+            return Ok();
+        }
+
+        [HttpPut("{courseId}/course-tags")]
+        [Authorize(Roles = "Instructor")]
+        public ActionResult<CourseVideoDto> UpdateCourseTag(int courseId, [FromBody] List<long> tagsList)
+        {
+            IsUserIdAvailable(out int userId);
+
+            CourseRepository.UpdateCourseTags(courseId, tagsList);
+            return Ok();
+        }
+
+        [HttpDelete("{courseId}/course-tags/{tagId}")]
+        [Authorize(Roles = "Instructor")]
+        public ActionResult<bool> RemvoeCourseTag(int courseId, int tagId)
+        {
+            IsUserIdAvailable(out int userId);
+
+            bool isDeleted = CourseRepository.RemoveCourseTag(courseId, tagId);
+            if (isDeleted)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+
+
+
+
+
+        // get courses of my interests
+        [HttpGet("my-interests-courses")]
+        public ActionResult<IEnumerable<CourseInfoDto>> GetCoursesOfMyInterests()
+        {
+            IsUserIdAvailable(out int userId);
+
+            return Ok(CourseRepository.GetCoursesOfMyInterests(userId));
+        }
 
 
 

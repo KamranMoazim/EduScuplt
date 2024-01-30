@@ -1,6 +1,7 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Backend.Dtos.CourseFoldersDtos
 {
@@ -11,7 +12,7 @@ namespace Backend.Dtos.CourseFoldersDtos
         [StringLength(100, ErrorMessage = "Folder Name must be at most 100 characters.")]
         public string FolderName { get; set; }
         
-        [Required(ErrorMessage = "Course ID is required.")]
+        [JsonIgnore]
         public int CourseId { get; set; }
     }
 }

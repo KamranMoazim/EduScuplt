@@ -17,6 +17,7 @@ namespace Backend.Repositories.InstructorRepo
         void DeleteInstructor(Instructor instructor);
 
         List<Instructor> GetAllInstructors();
+        List<Instructor> GetAllInstructorsForAdminApproval();
 
 
     }
